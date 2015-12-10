@@ -1,0 +1,31 @@
+.svg-player {
+    border: 1px solid #d3d3d3;
+    .buttons {
+        border-top: 1px solid #d3d3d3;
+        padding: 2px;
+        .btn {
+            margin-right: 2px;
+        }
+        .status {
+            float: right;
+        }
+        .steps, .distance {
+            height: 2em;
+            padding-top: 6px;
+            padding-right: 4px;
+        }
+        .steps {
+            margin-right: 10px;
+        }
+        .inactive {
+            color: #d3d3d3;
+        }
+    }
+    .loading {
+        position: absolute;
+        top: 48%;
+        left: 48%;
+        color: #d3d3d3;
+        font-size: 1.5em;
+    }
+}
