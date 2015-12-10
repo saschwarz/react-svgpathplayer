@@ -1,7 +1,6 @@
 [![build status](https://secure.travis-ci.org/saschwarz/react-svgpathplayer.png)](http://travis-ci.org/saschwarz/react-svgpathplayer) [![bitHound Score](https://www.bithound.io/github/saschwarz/react-svgpathplayer/badges/score.svg)](https://www.bithound.io/github/saschwarz/react-svgpathplayer) [![Dependency Status](https://david-dm.org/saschwarz/react-svgpathplayer.svg)](https://david-dm.org/saschwarz/react-svgpathplayer)
-# react-svgpathplayer - Boilerplate for React.js components
+# react-svgpathplayer
 
-This is a simple boilerplate that has been developed to make it easier to develop React components and small projects.
 
 ## Basic Usage
 
@@ -10,16 +9,6 @@ This is a simple boilerplate that has been developed to make it easier to develo
 * Developing - **npm start** - Runs the development server at *localhost:8080* and use Hot Module Replacement. You can override the default host and port through env (`HOST`, `PORT`).
 * Creating a version - **npm version <x.y.<>** - Updates */dist* and *package.json* with the new version and create a version tag to Git.
 * Publishing a version - **npm publish** - Pushes a new version to npm and updates the project site.
-
-## Highlighting Demo
-
-```js
-var a = 5;
-var b = 10;
-
-// just trying out code highlighting feature here
-console.log(a + b);
-```
 
 ## License
 

@@ -249,7 +249,7 @@ export default class SVGPathPlayer extends React.Component {
         }
 
         return (
-            <div className="svg-player">
+            <div className="svg-path-player">
                 <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}>
                 {loadingImg}
                 </div>
