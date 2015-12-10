@@ -239,10 +239,9 @@ const distCommon = {
         include: config.paths.src,
         query: {
             stage: 0,
-            externalHelpers: true,
+            externalHelpers: true
         }
-      },
-
+      }
     ]
   },
   plugins: [
