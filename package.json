@@ -21,6 +21,8 @@
   },
   "main": "dist-modules",
   "dependencies": {
+    "classnames": "^2.2.1",
+    "lodash": "^3.10.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "snapsvg": "git+https://github.com/adobe-webplatform/Snap.svg.git#master"
