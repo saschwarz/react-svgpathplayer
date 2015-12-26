@@ -3,13 +3,13 @@
 
 ## Basic Usage
 
-See the [![demo](http://saschwarz.github.io/react-svgpathplayer)] for detailed usage of this component.
+See the [demo](http://saschwarz.github.io/react-svgpathplayer/) for example usage of this component.
 
+There is also a [demo](http://saschwarz.github.io/react-svgpathplayer/script.html) using this component in a plain HTML/JS file.
 
 ## Developers
 
 * Linting - **npm run lint** - Runs ESLint.
-* Testing - **npm test** and **npm run tdd** - Runs Karma/Mocha/Chai/Phantom. Code coverage report is generated through istanbul/isparta to `build/`.
 * Developing - **npm start** - Runs the development server at *localhost:8080* and use Hot Module Replacement. You can override the default host and port through env (`HOST`, `PORT`).
 * Creating a version - **npm version <x.y.<>** - Updates */dist* and *package.json* with the new version and create a version tag to Git.
 * Publishing a version - **npm publish** - Pushes a new version to npm and updates the project site.

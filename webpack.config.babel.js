@@ -184,11 +184,6 @@ const distCommon = {
         query: {
             stage: 1
         },
-      },
-      {
-        test: /\.json$/,
-        loader: 'json',
-        include: path.join(ROOT_PATH, 'package.json')
       }
     ]
   },
@@ -277,8 +272,6 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendors', 'manifest']
       })
-      // XXX: glitchy still
-      //new webpack.NamedModulesPlugin()
     ],
     module: {
       loaders: [
@@ -298,16 +291,12 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
             stage: 1
           }
         },
-      {
-        test: /(\.jpg)|(\.svg)$/,
-        loader: 'file',
-        include: config.paths.demo
-      },
-      // {
-      //   test: /\.png$/,
-      //   loader: 'url?limit=100000&mimetype=image/png',
-      //   include: config.paths.demo
-      // }
+        // copy into gh-pages/images
+        {
+          test: /image\.svg$/,
+          loader: 'file?name=images/image.svg',
+          include: config.paths.demo
+        }
       ]
     }
   });
