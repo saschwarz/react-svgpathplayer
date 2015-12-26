@@ -12,6 +12,7 @@
     "deploy-gh-pages": "node ./lib/deploy_gh_pages.js",
     "dist": "webpack",
     "script": "webpack",
+    "script-min": "webpack",
     "dist-min": "webpack",
     "dist-modules": "babel ./src --out-dir ./dist-modules",
     "lint": "eslint . --ext .js --ext .jsx",

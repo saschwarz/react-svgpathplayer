@@ -226,6 +226,24 @@ if (TARGET === 'script') {
     }
   });
 }
+if (TARGET === 'script-min') {
+  module.exports = merge(distCommon, {
+    output: {
+      // export itself to a global var
+      libraryTarget: "var",
+      // name of the global var:
+      library: config.library,
+      filename: config.filename + '.script.min.js'
+    },
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      })
+    ]
+  });
+}
 
 if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
   module.exports = merge(demoCommon, {
@@ -296,6 +314,11 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
           test: /image\.svg$/,
           loader: 'file?name=images/image.svg',
           include: config.paths.demo
+        },
+        {
+          test: /svgpathplayer\.script\.min\.js$/,
+          loader: 'file?name=svgpathplayer.script.min.js',
+          include: config.paths.dist
         }
       ]
     }
