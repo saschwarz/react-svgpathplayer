@@ -1,13 +1,22 @@
+@import "glyphicon_spin";
+
 .svg-path-player {
     border: 1px solid #d3d3d3;
     .buttons {
         border-top: 1px solid #d3d3d3;
         padding: 2px;
+        overflow: hidden;
         .btn {
             margin-right: 2px;
+            .glyphicon {
+                top: 1px;
+            }
         }
         .status {
             float: right;
+            &:after {
+                clear: both;
+            }
         }
         .steps, .distance {
             height: 2em;

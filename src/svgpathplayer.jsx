@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
-import './svgpathplayer.scss';
 import Snap from 'snapsvg';
+import './svgpathplayer.scss';
 
 
 export default class SVGPathPlayer extends React.Component {
@@ -21,21 +21,21 @@ export default class SVGPathPlayer extends React.Component {
        displayed (at the start of the path/end of segments).
      */
     static propTypes = {
-        svg: React.PropTypes.string.isRequired,  // URL to svg element
-        path: React.PropTypes.string.isRequired,  // selector to SVG path to render
+        controls: React.PropTypes.bool,  // show controls
+        loading: React.PropTypes.bool,  // show loading indicator
         marker: React.PropTypes.string,   // selector to SVG object to use as path marker
-        units: React.PropTypes.oneOf(['yds', 'm']),  // convert inches to these units
+        path: React.PropTypes.string.isRequired,  // selector to SVG path to render
 
         position: React.PropTypes.number,       // start position along path
-        time: React.PropTypes.number,   // path animation time defaults to 2000ms
+        repeat: React.PropTypes.bool,  // loop playing
 
         segments: React.PropTypes.string,  // selector to container of SVG path segments to render
+        startplaying: React.PropTypes.bool,  // start playing
         step: React.PropTypes.number,       // starting segment 0-based
 
-        startplaying: React.PropTypes.bool,  // start playing
-        loading: React.PropTypes.bool,  // show loading indicator
-        controls: React.PropTypes.bool,  // show controls
-        repeat: React.PropTypes.bool  // loop playing
+        svg: React.PropTypes.string.isRequired,  // URL to svg element
+        time: React.PropTypes.number,   // path animation time defaults to 2000ms
+        units: React.PropTypes.oneOf(['yds', 'm'])  // convert inches to these units
     };
 
     static defaultProps = {
@@ -173,16 +173,17 @@ export default class SVGPathPlayer extends React.Component {
                       if (this.props.marker) {
                           this.marker = this.svg.select(this.props.marker);
                           this.marker.attr({marker:'', markerStart:'', markerEnd:''});
+                          if (this.props.path){
+                              this.path.attr({marker:'', markerStart:'', markerEnd:''});
+                          }
                           if (this.props.segments){
                               this.snapSegments.attr({marker:'', markerStart:'', markerEnd:''});
                           }
                           this.positionMarker(this.path, 0);
                       }
-                      if (this.isMounted()) {
-                          this.setState({loading: false,
-                                         steps: this.snapSegments.length,
-                                         length: pathLength});
-                      }
+                      this.setState({loading: false,
+                                     steps: this.snapSegments.length,
+                                     length: pathLength});
                       this._hideSegments();
                       if (this.props.startplaying) {
                           this.play();
@@ -205,11 +206,11 @@ export default class SVGPathPlayer extends React.Component {
         if (this.props.path){
             playPauseButtons = (
                 <span>
-                    <button type="button" className="btn" aria-pressed="false" autoComplete="off" onClick={this.play} style={playDisplay} disabled={loading}>
-                        <span className="glyphicon glyphicon-play" aria-hidden="true"></span>
+                    <button aria-pressed="false" autoComplete="off" className="btn btn-success" disabled={loading} onClick={this.play} style={playDisplay} type="button">
+                        <span aria-hidden="true" className="glyphicon glyphicon-play"></span>
                     </button>
-                    <button type="button" className="btn" aria-pressed="false" autoComplete="off" onClick={this.pause} style={pauseDisplay} disabled={loading}>
-                        <span className="glyphicon glyphicon-pause" aria-hidden="true"></span>
+                    <button aria-pressed="false" autoComplete="off" className="btn" disabled={loading} onClick={this.pause} style={pauseDisplay} type="button">
+                        <span aria-hidden="true" className="glyphicon glyphicon-pause"></span>
                     </button>
                 </span>
             );
@@ -218,10 +219,10 @@ export default class SVGPathPlayer extends React.Component {
         if (this.props.segments){
             segmentButtons = (
                 <span>
-                        <button type="button" className="btn step-backward" aria-pressed="false" autoComplete="off" onClick={this.playSegmentBackward} disabled={loading}>
-                            <span className="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                        <button aria-pressed="false" autoComplete="off" className="btn step-backward" disabled={loading} onClick={this.playSegmentBackward} type="button">
+                            <span aria-hidden="true" className="glyphicon glyphicon-step-backward"></span>
                         </button>
-                        <button type="button" className="btn step-forward" aria-pressed="false" autoComplete="off" onClick={this.playSegmentForward} disabled={loading}>
+                        <button aria-pressed="false" autoComplete="off" className="btn step-forward" disabled={loading} onClick={this.playSegmentForward} type="button">
                             <span aria-hidden="true" className="glyphicon glyphicon-step-forward"></span>
                         </button>
                 </span>
@@ -250,8 +251,8 @@ export default class SVGPathPlayer extends React.Component {
 
         return (
             <div className="svg-path-player">
-                <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}>
                 {loadingImg}
+                <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}>
                 </div>
                 {controls}
             </div>

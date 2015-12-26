@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import marked from 'marked';
 
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -9,9 +10,6 @@ import Clean from 'clean-webpack-plugin';
 import merge from 'webpack-merge';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import MTRC from 'markdown-to-react-components';
-
-import App from './demo/App.jsx';
 import pkg from './package.json';
 
 const TARGET = process.env.npm_lifecycle_event;
@@ -28,7 +26,6 @@ const config = {
 };
 const CSS_PATHS = [
   config.paths.demo,
-  path.join(ROOT_PATH, 'style.css'),
   path.join(ROOT_PATH, 'node_modules/purecss'),
   path.join(ROOT_PATH, 'node_modules/highlight.js/styles/github.css'),
   path.join(ROOT_PATH, 'node_modules/react-ghfork/gh-fork-ribbon.ie.css'),
@@ -39,12 +36,9 @@ process.env.BABEL_ENV = TARGET;
 
 const demoCommon = {
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css', '.png', '.jpg']
+    extensions: ['', '.js', '.jsx', '.css', '.png', '.jpg', '.scss']
   },
   module: {
-    externals: {
-        'snapsvg': 'var Snap'
-    },
     preLoaders: [
       {
         test: /\.jsx?$/,
@@ -57,10 +51,14 @@ const demoCommon = {
     ],
     loaders: [
       {
+          // https://github.com/adobe-webplatform/Snap.svg/issues/341#issuecomment-143267637
+          test: require.resolve('snapsvg'),
+          loader: 'imports-loader?this=>window,fix=>module.exports=0'
+      },
+      {
         test: /\.scss$/,
         // Query parameters are passed to node-sass
         loader: 'style!css!sass?outputStyle=expanded&' +
-          'includePaths[]=' + (path.resolve(__dirname, './bower_components')) + '&' +
           'includePaths[]=' + (path.resolve(__dirname, './node_modules'))
       },
       {
@@ -69,7 +67,7 @@ const demoCommon = {
         include: config.paths.demo
       },
       {
-        test: /\.jpg$/,
+        test: /(\.jpg)|(\.svg)$/,
         loader: 'file',
         include: config.paths.demo
       },
@@ -95,7 +93,8 @@ if (TARGET === 'start') {
       }),
       new HtmlWebpackPlugin({
         title: pkg.name + ' - ' + pkg.description,
-        templateContent: renderJSX
+        filename: 'index.html',
+        templateContent: renderHTML.bind(null, 'demo/index.html')
       }),
       new webpack.HotModuleReplacementPlugin()
     ],
@@ -124,62 +123,6 @@ if (TARGET === 'start') {
       host: process.env.HOST,
       port: process.env.PORT,
       stats: 'errors-only'
-    }
-  });
-}
-
-if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
-  module.exports = merge(demoCommon, {
-    entry: {
-      app: config.paths.demo,
-      vendors: [
-        'react'
-      ]
-    },
-    output: {
-      path: './gh-pages',
-      filename: '[name].[chunkhash].js',
-      chunkFilename: '[chunkhash].js'
-    },
-    plugins: [
-      new Clean(['gh-pages']),
-      new ExtractTextPlugin('styles.[chunkhash].css'),
-      new webpack.DefinePlugin({
-          // This has effect on the react lib size
-        'process.env.NODE_ENV': JSON.stringify('production')
-      }),
-      new HtmlWebpackPlugin({
-        title: pkg.name + ' - ' + pkg.description,
-        templateContent: renderJSX.bind(null, ReactDOM.renderToString(<App />))
-      }),
-      new webpack.optimize.DedupePlugin(),
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        }
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendors', 'manifest']
-      })
-      // XXX: glitchy still
-      //new webpack.NamedModulesPlugin()
-    ],
-    module: {
-      loaders: [
-        {
-          test: /\.css$/,
-          loader: ExtractTextPlugin.extract('style', 'css'),
-          include: CSS_PATHS
-        },
-        {
-          test: /\.jsx?$/,
-          loaders: ['babel'],
-          include: [
-            config.paths.demo,
-            config.paths.src
-          ]
-        }
-      ]
     }
   });
 }
@@ -219,10 +162,12 @@ const distCommon = {
     library: config.library
   },
   entry: config.paths.src,
+  // want packaged version to contain only it's code
   externals: {
    'react': 'var React',
    'react/addons': 'var React',
-   'snapsvg': 'var Snap'
+   'snapsvg': 'var Snap',
+   'lodash': 'var _'
   },
   module: {
     loaders: [
@@ -230,7 +175,6 @@ const distCommon = {
         test: /\.scss$/,
         // Query parameters are passed to node-sass
         loader: 'style!css!sass?outputStyle=expanded&' +
-          'includePaths[]=' + (path.resolve(__dirname, './bower_components')) + '&' +
           'includePaths[]=' + (path.resolve(__dirname, './node_modules'))
       },
       {
@@ -238,9 +182,13 @@ const distCommon = {
         loader: 'babel-loader',
         include: config.paths.src,
         query: {
-            stage: 0,
-            externalHelpers: true
-        }
+            stage: 1
+        },
+      },
+      {
+        test: /\.json$/,
+        loader: 'json',
+        include: path.join(ROOT_PATH, 'package.json')
       }
     ]
   },
@@ -272,18 +220,109 @@ if (TARGET === 'dist-min') {
   });
 }
 
-function renderJSX(demoTemplate, templateParams, compilation) {
+if (TARGET === 'script') {
+  module.exports = merge(distCommon, {
+    output: {
+      // export itself to a global var
+      libraryTarget: "var",
+      // name of the global var:
+      library: config.library,
+      filename: config.filename + '.script.js'
+    }
+  });
+}
+
+if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
+  module.exports = merge(demoCommon, {
+    entry: {
+      app: path.join(config.paths.demo, 'index.js'),
+      script: path.join(config.paths.demo, 'script.js'),
+      vendors: [
+        'react',
+        'react-dom',
+        'lodash',
+        'snapsvg'
+      ]
+    },
+    output: {
+      path: './gh-pages',
+      filename: '[name].[chunkhash].js',
+      chunkFilename: '[chunkhash].js'
+    },
+    plugins: [
+      new Clean(['gh-pages']),
+      new ExtractTextPlugin('styles.[chunkhash].css'),
+      new webpack.DefinePlugin({
+          // This has effect on the react lib size
+        'process.env.NODE_ENV': JSON.stringify('production')
+      }),
+      // script.html doesn't use any entry point info
+      // relies on dist/*.script.js
+      new HtmlWebpackPlugin({
+        title: pkg.name + ' - ' + pkg.description,
+        filename: 'script.html',
+        templateContent: renderHTML.bind(null, 'demo/script.html')
+      }),
+      new HtmlWebpackPlugin({
+        title: pkg.name + ' - ' + pkg.description,
+        filename: 'index.html',
+        templateContent: renderHTML.bind(null, 'demo/index.html')
+      }),
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        names: ['vendors', 'manifest']
+      })
+      // XXX: glitchy still
+      //new webpack.NamedModulesPlugin()
+    ],
+    module: {
+      loaders: [
+        {
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract('style', 'css'),
+          include: CSS_PATHS
+        },
+        {
+          test: /\.jsx?$/,
+          loader: 'babel-loader',
+          include: [
+            config.paths.demo,
+            config.paths.src
+          ],
+          query: {
+            stage: 1
+          }
+        },
+      {
+        test: /(\.jpg)|(\.svg)$/,
+        loader: 'file',
+        include: config.paths.demo
+      },
+      // {
+      //   test: /\.png$/,
+      //   loader: 'url?limit=100000&mimetype=image/png',
+      //   include: config.paths.demo
+      // }
+      ]
+    }
+  });
+}
+
+function renderHTML(htmlTemplate, demoTemplate, templateParams, compilation) {
   demoTemplate = demoTemplate || '';
 
-  var tpl = fs.readFileSync(path.join(__dirname, 'lib/index_template.tpl'), 'utf8');
+  var tpl = fs.readFileSync(path.join(__dirname, htmlTemplate), 'utf8');
   var readme = fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8');
   var replacements = {
     name: pkg.name,
     description: pkg.description,
     demo: demoTemplate,
-    documentation: ReactDOM.renderToStaticMarkup(
-      <div key="documentation">{MTRC(readme).tree}</div>
-    )
+    readme: marked(readme)
   };
 
   return tpl.replace(/%(\w*)%/g, function(match) {

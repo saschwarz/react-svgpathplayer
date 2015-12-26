@@ -1,0 +1,76 @@
+<html>
+<head>
+  <title>{%= o.htmlWebpackPlugin.options.title %}</title>
+    {% if (o.htmlWebpackPlugin.files.favicon) { %}
+    <link rel="shortcut icon" href="{%=o.htmlWebpackPlugin.files.favicon%}">
+    {% } %}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    {% for (var css in o.htmlWebpackPlugin.files.css) { %}
+    <link href="{%=o.htmlWebpackPlugin.files.css[css] %}" rel="stylesheet">
+    {% } %}
+</head>
+<body>
+  <div class="container">
+    <h1>SVGPathPlayer Demos</h1>
+    <p>View the source to see how to use this React Component in a plain HTML file.</p>
+    <div class="row">
+      <div class="col-sm-4">
+        <h4>AJAX, Path, Segments, Marker, Time, Loading & Controls</h4>
+        <div id="player-1"></div>
+      </div>
+      <div class="col-sm-4">
+        <h4>AJAX, Segments, Marker, Time, Loading & Controls</h4>
+        <div id="player-2"></div>
+      </div>
+      <div class="col-sm-4">
+        <h4>AJAX, Path, Marker, Time, Loading & Controls</h4>
+        <div id="player-3"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <h4>AJAX, Path, Segments, Marker, Time, Loading, Start & Repeat</h4>
+        <div id="player-4"></div>
+      </div>
+      <div class="col-sm-4">
+        <h4>AJAX, Path, Marker, Time, Loading & Start</h4>
+        <p>Runs automatically at start one time.</p>
+        <div id="player-5"></div>
+      </div>
+    </div>
+  </div>
+  <script src="/node_modules/babel-core/external-helpers.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+  <script src="/dist/svgpathplayer.script.js"></script>
+  <script>
+    /* how to use this lib within a plain HTML/JS page */
+    function insertConfig(props, destid){
+        var config = document.createElement("pre");
+        config.innerHTML = JSON.stringify(props, null, '    ');
+        document.getElementById(destid).appendChild(config);
+    }
+    var props1 = {svg:"/demo/images/image.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props1), document.getElementById('player-1'));
+    insertConfig(props1, 'player-1');
+
+    var props2 = {svg:"/demo/images/image.svg", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props2), document.getElementById('player-2'));
+    insertConfig(props2, 'player-2');
+
+    var props3 = {svg:"/demo/images/image.svg", path:".dog-path-0", marker:".dog", loading:true, time:10236};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props3), document.getElementById('player-3'));
+    insertConfig(props3, 'player-3');
+
+    var props4 = {svg:"/demo/images/image.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236, controls:false, startplaying:true, repeat:true};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props4), document.getElementById('player-4'));
+    insertConfig(props4, 'player-4');
+
+    var props5 = {svg:"/demo/images/image.svg", path:".dog-path-0", marker:".dog", loading:true, time:10236, startplaying:true, controls:false};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props5), document.getElementById('player-5'));
+    insertConfig(props5, 'player-5');
+  </script>
+</body>
+</html>
