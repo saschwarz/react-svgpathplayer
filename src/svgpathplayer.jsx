@@ -81,7 +81,7 @@ export default class SVGPathPlayer extends React.Component {
         this.playSegmentForward = this.playSegmentForward.bind(this);
         this.playSegmentBackward = this.playSegmentBackward.bind(this);
         this.pause = this.pause.bind(this);
-    };
+    }
 
     play(){
         let start = this.state.position;
@@ -115,7 +115,7 @@ export default class SVGPathPlayer extends React.Component {
                                                 setTimeout(() => this.play(), 1);
                                             }
                                         });
-    };
+    }
 
     positionMarker(path, location, end){
         if (this.marker) {
@@ -130,7 +130,7 @@ export default class SVGPathPlayer extends React.Component {
             }
             this.marker.transform('translate(' + now.x + ',' + now.y + ') rotate('+ (point.alpha - 90)+')');
         }
-    };
+    }
 
     playSegmentForward(){
         let nextStep;
@@ -141,7 +141,7 @@ export default class SVGPathPlayer extends React.Component {
             nextStep = this.state.step + 1;
         }
         this._transitionSegment(nextStep);
-    };
+    }
 
     playSegmentBackward(){
         let nextStep;
@@ -189,11 +189,11 @@ export default class SVGPathPlayer extends React.Component {
                           this.play();
                       }
                   });
-    };
+    }
 
     componentWillUnmount() {
         this.svg.remove();  // destory SnapSVG for this DOM element
-    };
+    }
 
     render() {
         let loading = this.state.loading;
@@ -257,7 +257,7 @@ export default class SVGPathPlayer extends React.Component {
                 {controls}
             </div>
         );
-    };
+    }
 
     selectPath(pathClass, display){
         this.svg.select(pathClass).attr({display: ''});
@@ -265,18 +265,18 @@ export default class SVGPathPlayer extends React.Component {
         if (!display) {
             this._hidePath();
         }
-    };
+    }
 
     pause(){
         this.setState({playing: false});
         this.snapAnimate.stop();  // resume() doesn't work... :(
-    };
+    }
 
     _hidePath(){
         if (this.path){
             this.path.attr({display: 'none'});
         }
-    };
+    }
 
     _transitionSegment(nextStep){
         let pathLen;
@@ -290,7 +290,7 @@ export default class SVGPathPlayer extends React.Component {
         this.setState({step: nextStep,
                        position: this._segmentPosition(nextStep),
                        playing: false});
-    };
+    }
 
     _segmentFromPosition(pos){
         let x = _.findLastIndex(this.segmentLengths,
@@ -299,7 +299,7 @@ export default class SVGPathPlayer extends React.Component {
                                 });
         x = x < 0 ? 0 : x;
         return x;
-    };
+    }
 
     _pathToSegment(){ // switch from playing path to playing segment
         if (this.state.playing) {
@@ -307,27 +307,27 @@ export default class SVGPathPlayer extends React.Component {
         }
         this.setState({mode: 'segment'});
         this._hidePath();
-    };
+    }
 
     _segmentToPath(){ // switch from playing segment to playing path
         this.setState({mode: 'path'});
         this._hideSegments();
-    };
+    }
 
     _hideSegments(){
         _.each(this.snapSegments, (segment) => { segment.attr({display: 'none'});});
-    };
+    }
 
     _hideCurrentSegment(){
         if (this.snapSegment){
             this.snapSegment.attr({display: 'none'});
         }
-    };
+    }
 
     _showSegment(step){
         this.snapSegment = this.snapSegments[step];
         this.snapSegment.attr({display: 'block'});
-    };
+    }
 
     _segmentLengths(){
         // total length of path at end of each segment
@@ -340,18 +340,18 @@ export default class SVGPathPlayer extends React.Component {
                             }
                             return a;
                         }, []);
-    };
+    }
 
     _segmentPosition(step){
         return this.segmentLengths[step];
-    };
+    }
 
     _displayStep(step){
         if (step < 0){
             return 0;
         }
         return step + 1;
-    };
+    }
 
     _displayDistance(inches){
         if (this.props.units == 'm') {
@@ -360,4 +360,4 @@ export default class SVGPathPlayer extends React.Component {
             return Number(inches / 36.00).toFixed();
         }
     }
-};
+}

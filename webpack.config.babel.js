@@ -8,8 +8,6 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import SystemBellPlugin from 'system-bell-webpack-plugin';
 import Clean from 'clean-webpack-plugin';
 import merge from 'webpack-merge';
-import React from 'react';
-import ReactDOM from 'react-dom/server';
 import pkg from './package.json';
 
 const TARGET = process.env.npm_lifecycle_event;
@@ -183,7 +181,7 @@ const distCommon = {
         include: config.paths.src,
         query: {
             stage: 1
-        },
+        }
       }
     ]
   },
