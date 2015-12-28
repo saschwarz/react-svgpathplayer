@@ -9,11 +9,9 @@ export default class Controls extends React.Component {
         length: React.PropTypes.number,       // total path length
         loading: React.PropTypes.bool,  // show loading indicator
         mode: React.PropTypes.string,   // "loading", "path", "playing", "segment"
-        path: React.PropTypes.string.isRequired,  // selector to SVG path to render
         pause: React.PropTypes.function,
         play: React.PropTypes.function,
         position: React.PropTypes.number,       // start position along path
-        segments: React.PropTypes.string,  // selector to container of SVG path segments to render
         step: React.PropTypes.number,       // starting segment 0-based
         units: React.PropTypes.oneOf(['yds', 'm'])  // convert inches to these units
     };
@@ -37,7 +35,7 @@ export default class Controls extends React.Component {
         let steps, loading = this.props.loading, playPauseButtons, segmentButtons;
         let stepClasses = classNames(['steps'], {'inactive': this.props.mode === 'path' || this.props.mode === 'playing' || loading});
         let distanceClasses = classNames(['distance'], {'inactive': loading});
-        if (this.props.path){
+        if (this.props.play || this.props.pause){
             let playDisplay = {display: this.props.mode !== 'playing' ? 'inline' : 'none'};
             let pauseDisplay = {display: this.props.mode === 'playing' ? 'inline' : 'none'};
 
@@ -52,7 +50,7 @@ export default class Controls extends React.Component {
                 </span>
             );
         }
-        if (this.props.segments){
+        if (this.props.backward || this.props.forward){
             segmentButtons = (
                 <span>
                     <button aria-pressed="false" autoComplete="off" className="btn step-backward" disabled={loading} onClick={this.props.backward} type="button">
