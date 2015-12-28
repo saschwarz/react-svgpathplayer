@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import SVGPathPlayer from '../src/svgpathplayer';
-import {Spinner} from '../src/svgpathplayer';
+import Spinner from '../src/spinner';
 
 function setup(props) {
   props = props || {
@@ -30,16 +30,17 @@ describe('components', () => {
 
            expect(output.type).to.equal('div')
            expect(output.props).to.have.property('className', 'loading glyphicon glyphicon-refresh glyphicon-spin');
-           expect(output.props).to.have.property('style', '')
+           expect(output.props).to.have.property('style').to.be.empty;
        });
+
        it('does not display when loading prop is not true', () => {
            let renderer = TestUtils.createRenderer()
            renderer.render(<Spinner loading={false}/>)
            let output = renderer.getRenderOutput();
+
            expect(output.type).to.equal('div')
-           expect(output.props).to.have.property('className', 'loading glyphicon glyphicon-refresh glyphicon-spin');
-           console.log(output.props)
-           expect(output.props).to.have.property('style', 'display:none')
+           expect(output.props).to.have.property('className').to.equal('loading glyphicon glyphicon-refresh glyphicon-spin');
+           expect(output.props).to.have.property('style').to.have.property('display', 'none');
        })
 
     });
