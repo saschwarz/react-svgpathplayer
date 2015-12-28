@@ -167,6 +167,9 @@ const distCommon = {
    'snapsvg': 'var Snap',
    'lodash': 'var _'
   },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.css', '.png', '.jpg', '.scss']
+  },
   module: {
     loaders: [
       {
