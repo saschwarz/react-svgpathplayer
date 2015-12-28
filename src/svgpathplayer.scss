@@ -2,6 +2,7 @@
 
 .svg-path-player {
     border: 1px solid #d3d3d3;
+    position: relative;
     .buttons {
         border-top: 1px solid #d3d3d3;
         padding: 2px;
@@ -32,8 +33,8 @@
     }
     .loading {
         position: absolute;
-        top: 48%;
-        left: 48%;
+        top: 45%;
+        left: 47%;
         color: #d3d3d3;
         font-size: 1.5em;
     }

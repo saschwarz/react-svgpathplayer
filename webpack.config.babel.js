@@ -17,7 +17,7 @@ const config = {
     dist: path.join(ROOT_PATH, 'dist'),
     src: path.join(ROOT_PATH, 'src'),
     demo: path.join(ROOT_PATH, 'demo'),
-    tests: path.join(ROOT_PATH, 'tests')
+    test: path.join(ROOT_PATH, 'test')
   },
   filename: 'svgpathplayer',
   library: 'SVGPathPlayer'
@@ -126,31 +126,31 @@ if (TARGET === 'start') {
 }
 
 // // !TARGET === prepush hook for test
-// if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
-//   module.exports = merge(demoCommon, {
-//     module: {
-//       preLoaders: [
-//         {
-//           test: /\.jsx?$/,
-//           loaders: ['eslint'],
-//           include: [
-//             config.paths.tests
-//           ]
-//         }
-//       ],
-//       loaders: [
-//         {
-//           test: /\.jsx?$/,
-//           loaders: ['babel'],
-//           include: [
-//             config.paths.src,
-//             config.paths.tests
-//           ]
-//         }
-//       ]
-//     }
-//   })
-// }
+if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
+  module.exports = merge(demoCommon, {
+    module: {
+      preLoaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          include: [
+            config.paths.test
+          ]
+        }
+      ],
+      loaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['babel'],
+          include: [
+            config.paths.src,
+            config.paths.test
+          ]
+        }
+      ]
+    }
+  })
+}
 
 const distCommon = {
   devtool: 'source-map',
@@ -217,7 +217,7 @@ if (TARGET === 'script') {
   module.exports = merge(distCommon, {
     output: {
       // export itself to a global var
-      libraryTarget: "var",
+      libraryTarget: 'var',
       // name of the global var:
       library: config.library,
       filename: config.filename + '.script.js'
@@ -228,7 +228,7 @@ if (TARGET === 'script-min') {
   module.exports = merge(distCommon, {
     output: {
       // export itself to a global var
-      libraryTarget: "var",
+      libraryTarget: 'var',
       // name of the global var:
       library: config.library,
       filename: config.filename + '.script.min.js'
@@ -323,7 +323,7 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
   });
 }
 
-function renderHTML(htmlTemplate, demoTemplate, templateParams, compilation) {
+function renderHTML(htmlTemplate, demoTemplate, templateParams) {
   demoTemplate = demoTemplate || '';
 
   var tpl = fs.readFileSync(path.join(__dirname, htmlTemplate), 'utf8');

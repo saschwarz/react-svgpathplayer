@@ -1,8 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import classNames from 'classnames';
 import Snap from 'snapsvg';
 import './svgpathplayer.scss';
+import Controls from './controls';
+import Spinner from './spinner';
 
 
 export default class SVGPathPlayer extends React.Component {
@@ -58,12 +59,9 @@ export default class SVGPathPlayer extends React.Component {
     state = {
         length: 0,
         position: this.props.position,
-        mode: 'path',
+        mode: 'loading',
         step: this.props.step,
-        steps: 0,
-
-        playing: false,
-        loading: true
+        steps: 0
     };
 
     constructor(props) {
@@ -91,7 +89,7 @@ export default class SVGPathPlayer extends React.Component {
         let remainingLength = this.state.length - start;
         let remainingTime = this.props.time * remainingLength / this.state.length;
         this._segmentToPath();
-        this.setState({playing: true});
+        this.setState({mode: 'playing'});
         this.path.attr({'stroke-dasharray': this.state.length + ' ' + this.state.length});
         this.path.attr({display: 'block'});
         this.snapAnimate = Snap.animate(remainingLength, 0,
@@ -109,7 +107,7 @@ export default class SVGPathPlayer extends React.Component {
                                         remainingTime,
                                         mina.linear,
                                         () => { // end callback
-                                            this.setState({playing: false,
+                                            this.setState({mode: 'path',
                                                            position: 0});
                                             if (this.props.repeat){
                                                 setTimeout(() => this.play(), 1);
@@ -157,6 +155,7 @@ export default class SVGPathPlayer extends React.Component {
         Snap.load(this.props.svg,
                   (file) => {
                       let pathLength = 0;
+                      let mode = 'path';
                       this.svg = Snap(this.svgImage);
                       this.svg.append(file);
                       if (this.props.path){
@@ -181,7 +180,7 @@ export default class SVGPathPlayer extends React.Component {
                           }
                           this.positionMarker(this.path, 0);
                       }
-                      this.setState({loading: false,
+                      this.setState({mode: mode,
                                      steps: this.snapSegments.length,
                                      length: pathLength});
                       this._hideSegments();
@@ -196,63 +195,12 @@ export default class SVGPathPlayer extends React.Component {
     }
 
     render() {
-        let loading = this.state.loading;
-        let playDisplay = {display: !this.state.playing ? 'inline' : 'none'};
-        let pauseDisplay = {display: this.state.playing ? 'inline' : 'none'};
-        let stepClasses = classNames(['steps'], {'inactive': this.state.mode=='path' || this.state.playing || loading});
-        let distanceClasses = classNames(['distance'], {'inactive': loading});
-        let controls = '';
-        let segmentButtons, playPauseButtons, steps, distance, buttons;
-        if (this.props.path){
-            playPauseButtons = (
-                <span>
-                    <button aria-pressed="false" autoComplete="off" className="btn btn-success" disabled={loading} onClick={this.play} style={playDisplay} type="button">
-                        <span aria-hidden="true" className="glyphicon glyphicon-play"></span>
-                    </button>
-                    <button aria-pressed="false" autoComplete="off" className="btn" disabled={loading} onClick={this.pause} style={pauseDisplay} type="button">
-                        <span aria-hidden="true" className="glyphicon glyphicon-pause"></span>
-                    </button>
-                </span>
-            );
-        }
-
-        if (this.props.segments){
-            segmentButtons = (
-                <span>
-                        <button aria-pressed="false" autoComplete="off" className="btn step-backward" disabled={loading} onClick={this.playSegmentBackward} type="button">
-                            <span aria-hidden="true" className="glyphicon glyphicon-step-backward"></span>
-                        </button>
-                        <button aria-pressed="false" autoComplete="off" className="btn step-forward" disabled={loading} onClick={this.playSegmentForward} type="button">
-                            <span aria-hidden="true" className="glyphicon glyphicon-step-forward"></span>
-                        </button>
-                </span>
-            );
-            steps = (
-                <label className={stepClasses}>{this._displayStep(this.state.step)} - {this._displayStep(this.state.step + 1)}</label>
-            );
-        }
-
-        buttons = (
-                <span>
-                    {playPauseButtons}
-                    {segmentButtons}
-                </span>
-            );
-
-        distance = (
-            <label className={distanceClasses}> {this._displayDistance(this.state.position)} : {this._displayDistance(this.state.length)} {this.props.units}</label>
-        );
-        let loadingImg = this.props.loading && loading ? (<div className="loading glyphicon glyphicon-refresh glyphicon-spin"></div>) : '';
-        if (this.props.controls) {
-            controls = (<div className="buttons">{buttons}
-                        <div className="status">{steps}{distance}</div>
-                        </div>);
-        }
-
+        let loading = this.state.mode === 'loading';
+        let  controls = !this.props.controls ? '' : (<Controls backward={this.playSegmentBackward} forward={this.playSegmentForward} length={this.state.length} loading={loading} mode={this.state.mode} path={this.props.path} pause={this.pause} play={this.play} position={this.state.position} segments={this.props.segments} step={this.state.step} units={this.props.units}/>);
         return (
             <div className="svg-path-player">
-                {loadingImg}
-                <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}>
+                <Spinner loading={this.props.loading && loading}/>
+                    <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}>
                 </div>
                 {controls}
             </div>
@@ -268,7 +216,7 @@ export default class SVGPathPlayer extends React.Component {
     }
 
     pause(){
-        this.setState({playing: false});
+        this.setState({mode: 'path'});
         this.snapAnimate.stop();  // resume() doesn't work... :(
     }
 
@@ -281,7 +229,7 @@ export default class SVGPathPlayer extends React.Component {
     _transitionSegment(nextStep){
         let pathLen;
         this._pathToSegment();
-        this.setState({playing: true});
+        this.setState({mode: 'playing'});
         this._hideCurrentSegment();
         this._showSegment(nextStep);
 
@@ -289,7 +237,7 @@ export default class SVGPathPlayer extends React.Component {
         this.positionMarker(this.snapSegment, pathLen, pathLen);
         this.setState({step: nextStep,
                        position: this._segmentPosition(nextStep),
-                       playing: false});
+                       mode: 'segment'});
     }
 
     _segmentFromPosition(pos){
@@ -302,7 +250,7 @@ export default class SVGPathPlayer extends React.Component {
     }
 
     _pathToSegment(){ // switch from playing path to playing segment
-        if (this.state.playing) {
+        if (this.mode === 'playing') {
             this.pause();
         }
         this.setState({mode: 'segment'});
@@ -344,20 +292,5 @@ export default class SVGPathPlayer extends React.Component {
 
     _segmentPosition(step){
         return this.segmentLengths[step];
-    }
-
-    _displayStep(step){
-        if (step < 0){
-            return 0;
-        }
-        return step + 1;
-    }
-
-    _displayDistance(inches){
-        if (this.props.units == 'm') {
-            return Number(inches / 39.37).toFixed();
-        } else {
-            return Number(inches / 36.00).toFixed();
-        }
     }
 }
