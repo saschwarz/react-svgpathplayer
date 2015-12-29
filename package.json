@@ -30,7 +30,7 @@
     "lodash": "^3.10.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "snapsvg": "git+https://github.com/adobe-webplatform/Snap.svg.git#master"
+    "snapsvg": "^0.4.0"
   },
   "devDependencies": {
     "babel": "^5.8.23",
@@ -101,8 +101,8 @@
     "lint"
   ],
   "config": {
-      "commitizen" : {
-          "path": "node_modules/cz-conventional-changelog"
-      }
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }

@@ -25,7 +25,7 @@ describe('components', () => {
     describe('Spinner', () =>{
        it('displays when loading prop is true', () => {
            let renderer = TestUtils.createRenderer()
-           renderer.render(<Spinner loading={true} />)
+           renderer.render(<Spinner />)
            let output = renderer.getRenderOutput();
 
            expect(output.type).to.equal('div')
