@@ -17,7 +17,7 @@ const config = {
     dist: path.join(ROOT_PATH, 'dist'),
     src: path.join(ROOT_PATH, 'src'),
     demo: path.join(ROOT_PATH, 'demo'),
-    test: path.join(ROOT_PATH, 'test')
+    test: path.join(ROOT_PATH, 'tests')
   },
   filename: 'svgpathplayer',
   library: 'SVGPathPlayer'
@@ -130,17 +130,14 @@ if (TARGET === 'start') {
   });
 }
 
-// // !TARGET === prepush hook for test
 if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
-  module.exports = merge(demoCommon, {
+  module.exports = merge.smart(demoCommon, {
     module: {
       preLoaders: [
         {
           test: /\.jsx?$/,
-          loaders: ['eslint'],
-          include: [
-            config.paths.test
-          ]
+          loaders: ['isparta-instrumenter'],
+          include: config.paths.src
         }
       ],
       loaders: [
@@ -155,6 +152,7 @@ if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
       ]
     }
   })
+  console.log(JSON.stringify(module.exports, null, '  '));
 }
 
 const distCommon = {
