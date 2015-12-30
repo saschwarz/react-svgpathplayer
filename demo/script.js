@@ -1,3 +1,3 @@
 require('./images/image.svg');
-require('../dist/svgpathplayer.script.min.js');
+require('../dist/svgpathplayer.min.js');
 import SVGPathPlayer from '../src/svgpathplayer.jsx';

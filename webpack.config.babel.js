@@ -110,6 +110,11 @@ if (TARGET === 'start') {
             config.paths.demo,
             config.paths.src
           ]
+        },
+        {
+          test: /image\.svg$/,
+          loader: 'file?name=images/image.svg',
+          include: config.paths.demo
         }
       ]
     },
@@ -196,6 +201,10 @@ const distCommon = {
 if (TARGET === 'dist') {
   module.exports = merge(distCommon, {
     output: {
+      // export itself to a global var
+      libraryTarget: 'var',
+      // name of the global var:
+      library: config.library,
       filename: config.filename + '.js'
     }
   });
@@ -204,37 +213,11 @@ if (TARGET === 'dist') {
 if (TARGET === 'dist-min') {
   module.exports = merge(distCommon, {
     output: {
+      // export itself to a global var
+      libraryTarget: 'var',
+      // name of the global var:
+      library: config.library,
       filename: config.filename + '.min.js'
-    },
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        }
-      })
-    ]
-  });
-}
-
-if (TARGET === 'script') {
-  module.exports = merge(distCommon, {
-    output: {
-      // export itself to a global var
-      libraryTarget: 'var',
-      // name of the global var:
-      library: config.library,
-      filename: config.filename + '.script.js'
-    }
-  });
-}
-if (TARGET === 'script-min') {
-  module.exports = merge(distCommon, {
-    output: {
-      // export itself to a global var
-      libraryTarget: 'var',
-      // name of the global var:
-      library: config.library,
-      filename: config.filename + '.script.min.js'
     },
     plugins: [
       new webpack.optimize.UglifyJsPlugin({
@@ -271,7 +254,7 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
         'process.env.NODE_ENV': JSON.stringify('production')
       }),
       // script.html doesn't use any entry point info
-      // relies on dist/*.script.js
+      // it relies on dist/*.script.js
       new HtmlWebpackPlugin({
         title: pkg.name + ' - ' + pkg.description,
         filename: 'script.html',
@@ -317,8 +300,8 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
           include: config.paths.demo
         },
         {
-          test: /svgpathplayer\.script\.min\.js$/,
-          loader: 'file?name=svgpathplayer.script.min.js',
+          test: /svgpathplayer\.min\.js$/,
+          loader: 'file?name=svgpathplayer.min.js',
           include: config.paths.dist
         }
       ]
