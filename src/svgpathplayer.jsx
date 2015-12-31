@@ -196,7 +196,7 @@ export default class SVGPathPlayer extends React.Component {
 
     render() {
         let loading = this.state.mode === 'loading';
-        let  controls = !this.props.controls ? '' : (<Controls backward={this.playSegmentBackward} forward={this.playSegmentForward} length={this.state.length} loading={loading} mode={this.state.mode} pause={this.pause} play={this.play} position={this.state.position} step={this.state.step} units={this.props.units}/>);
+        let  controls = !this.props.controls ? '' : (<Controls backward={this.playSegmentBackward} forward={this.playSegmentForward} length={this.state.length} mode={this.state.mode} pause={this.pause} play={this.play} position={this.state.position} step={this.state.step} units={this.props.units}/>);
         return (
             <div className="svg-path-player">
                 <Spinner loading={this.props.loading && loading}/>

@@ -4,15 +4,14 @@ import classNames from 'classnames';
 
 export default class Controls extends React.Component {
     static propTypes = {
-        backward: React.PropTypes.function,
-        forward: React.PropTypes.function,
-        length: React.PropTypes.number,       // total path length
-        loading: React.PropTypes.bool,  // show loading indicator
-        mode: React.PropTypes.string,   // "loading", "path", "playing", "segment"
-        pause: React.PropTypes.function,
-        play: React.PropTypes.function,
+        backward: React.PropTypes.func,         // func to call stepping backward
+        forward: React.PropTypes.func,          // func to call stepping forward
+        length: React.PropTypes.number,         // total path length
+        mode: React.PropTypes.string,           // "loading", "path", "playing", "segment"
+        pause: React.PropTypes.func,            // func to pause animation
+        play: React.PropTypes.func,             // func to start animation
         position: React.PropTypes.number,       // start position along path
-        step: React.PropTypes.number,       // starting segment 0-based
+        step: React.PropTypes.number,           // starting segment 0-based
         units: React.PropTypes.oneOf(['yds', 'm'])  // convert inches to these units
     };
 
@@ -32,7 +31,8 @@ export default class Controls extends React.Component {
     }
 
     render() {
-        let steps, loading = this.props.loading, playPauseButtons, segmentButtons;
+        let steps, playPauseButtons, segmentButtons;
+        let loading = this.props.mode === 'loading';
         let stepClasses = classNames(['steps'], {'inactive': this.props.mode === 'path' || this.props.mode === 'playing' || loading});
         let distanceClasses = classNames(['distance'], {'inactive': loading});
         if (this.props.play || this.props.pause){
@@ -41,10 +41,10 @@ export default class Controls extends React.Component {
 
             playPauseButtons = (
                 <span>
-                    <button aria-pressed="false" autoComplete="off" className="btn btn-success" disabled={loading} onClick={this.props.play} style={playDisplay} type="button">
+                    <button aria-pressed="false" autoComplete="off" className="btn btn-success play" disabled={loading} onClick={this.props.play} style={playDisplay} type="button">
                         <span aria-hidden="true" className="glyphicon glyphicon-play"></span>
                     </button>
-                    <button aria-pressed="false" autoComplete="off" className="btn" disabled={loading} onClick={this.props.pause} style={pauseDisplay} type="button">
+                    <button aria-pressed="false" autoComplete="off" className="btn pause" disabled={loading} onClick={this.props.pause} style={pauseDisplay} type="button">
                         <span aria-hidden="true" className="glyphicon glyphicon-pause"></span>
                     </button>
                 </span>
@@ -76,7 +76,7 @@ export default class Controls extends React.Component {
         );
 
         return (<div className="buttons">{buttons}
-                <div className="status">{steps}{distance}</div>
+                  <div className="status">{steps}{distance}</div>
                 </div>);
     }
 }

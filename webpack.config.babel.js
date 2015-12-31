@@ -43,7 +43,8 @@ const demoCommon = {
         loaders: ['eslint'],
         include: [
           config.paths.demo,
-          config.paths.src
+          config.paths.src,
+          config.paths.test
         ]
       }
     ],
@@ -145,14 +146,12 @@ if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
           test: /\.jsx?$/,
           loaders: ['babel'],
           include: [
-            config.paths.src,
             config.paths.test
           ]
         }
       ]
     }
   })
-  console.log(JSON.stringify(module.exports, null, '  '));
 }
 
 const distCommon = {
