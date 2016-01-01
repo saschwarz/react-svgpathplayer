@@ -29,7 +29,13 @@ module.exports = function karmaConfig (config) {
             'node_modules/phantomjs-polyfill/bind-polyfill.js',
 
             // Grab all files in the tests directory that contain _test.
-            'tests/**/test_*.*'
+            'tests/**/test_*.*',
+            {
+                pattern: 'demo/images/*.svg',
+                watched: true,
+                served: true,
+                included: false
+            }
         ],
 
         preprocessors: {

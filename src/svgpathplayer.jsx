@@ -22,38 +22,40 @@ export default class SVGPathPlayer extends React.Component {
        displayed (at the start of the path/end of segments).
      */
     static propTypes = {
-        controls: React.PropTypes.bool,  // show controls
-        loading: React.PropTypes.bool,  // show loading indicator
-        marker: React.PropTypes.string,   // selector to SVG object to use as path marker
-        path: React.PropTypes.string.isRequired,  // selector to SVG path to render
+        controls: React.PropTypes.bool,         // show controls
+        decimalPlaces: React.PropTypes.number,  // distance display decimal places - default to 1
+        loading: React.PropTypes.bool,          // show loading indicator
+        marker: React.PropTypes.string,         // selector to SVG object to use as path marker
+        path: React.PropTypes.string,           // selector to SVG path to render
 
         position: React.PropTypes.number,       // start position along path
-        repeat: React.PropTypes.bool,  // loop playing
+        repeat: React.PropTypes.bool,           // loop playing
+        scale: React.PropTypes.number,          // multiply length/position by this before display default 1
+        segments: React.PropTypes.string,       // selector to container of SVG path segments to render
+        startplaying: React.PropTypes.bool,     // start playing
+        step: React.PropTypes.number,           // starting segment 0-based
 
-        segments: React.PropTypes.string,  // selector to container of SVG path segments to render
-        startplaying: React.PropTypes.bool,  // start playing
-        step: React.PropTypes.number,       // starting segment 0-based
-
-        svg: React.PropTypes.string.isRequired,  // URL to svg element
-        time: React.PropTypes.number,   // path animation time defaults to 2000ms
-        units: React.PropTypes.oneOf(['yds', 'm'])  // convert inches to these units
+        svg: React.PropTypes.string.isRequired, // URL to svg element
+        time: React.PropTypes.number,           // path animation time defaults to 2000ms
+        units: React.PropTypes.string           // unit display string default ''
     };
 
     static defaultProps = {
-        svg: '',
-        path: '',
+        controls: true,
+        decimalPlaces: 1,
+        loading: true,
         marker: '',
-        units: 'yds',
+        path: undefined,
         position: 0,
-        time: 2000,
-
-        segments: '',
+        repeat: false,
+        scale: 1.0,
+        segments: undefined,
         step: -1,
 
         startplaying: false,
-        loading: true,
-        controls: true,
-        repeat: false
+        svg: '',
+        time: 2000,
+        units: ''
     };
 
     state = {
@@ -68,7 +70,7 @@ export default class SVGPathPlayer extends React.Component {
         super(props);
         this.svg = null;
         this.snapAnimate = null;
-        this.snapSegment = null;
+        this.currentSegment = null;
         this.snapSegments = [];
 
         this.path = null;
@@ -79,6 +81,7 @@ export default class SVGPathPlayer extends React.Component {
         this.playSegmentForward = this.playSegmentForward.bind(this);
         this.playSegmentBackward = this.playSegmentBackward.bind(this);
         this.pause = this.pause.bind(this);
+        this.loadFile = this.loadFile.bind(this);
     }
 
     play(){
@@ -97,7 +100,7 @@ export default class SVGPathPlayer extends React.Component {
                                             let newPos = this.state.length - val;
                                             this.path.attr({'stroke-dashoffset': val});
                                             if (this.marker) {
-                                                this.positionMarker(this.path,
+                                                this._positionMarker(this.path,
                                                                     newPos,
                                                                     this.state.length);
                                             }
@@ -115,7 +118,111 @@ export default class SVGPathPlayer extends React.Component {
                                         });
     }
 
-    positionMarker(path, location, end){
+    playSegmentForward(){
+        let nextStep;
+        this.pause();
+        if ((this.state.step === -1) ||  // never stepped
+            (this.state.step + 1 > this.state.steps - 1)) { // stepped off end
+            nextStep = 0;
+        } else {
+            nextStep = this.state.step + 1;
+        }
+        this._transitionSegment(nextStep);
+    }
+
+    playSegmentBackward(){
+        let nextStep;
+        this.pause();
+        if (this.state.step <= 0){  // never stepped start at -1
+            nextStep = this.state.steps - 1;
+        } else {
+            nextStep = this.state.step - 1;
+        }
+        this._transitionSegment(nextStep);
+    }
+
+    loadFile(file){
+        let pathLength = 0;
+        let mode = 'path';
+        this.svg = Snap(this.svgImage);
+        this.svg.append(file);
+        if (this.props.path){
+            this._selectPath(this.props.path, true);
+            pathLength = this.path && this.path.getTotalLength() || 0;
+        }
+        if (this.props.segments){
+            this.snapSegments = this.svg.selectAll(this.props.segments + ' path');
+            this.segmentLengths = this._segmentLengths();
+            if (this.segmentLengths.length > 0 && !pathLength){
+                pathLength = this._segmentPosition(this.snapSegments.length-1);
+            }
+        }
+        if (this.props.marker) {
+            this.marker = this.svg.select(this.props.marker);
+            if (this.marker){
+                this.marker.attr({marker:'', markerStart:'', markerEnd:''});
+            }
+            if (this.props.path && this.path){
+                this.path.attr({marker:'', markerStart:'', markerEnd:''});
+            }
+            if (this.props.segments){
+                this.snapSegments.attr({marker:'', markerStart:'', markerEnd:''});
+            }
+            this._positionMarker(this.path, 0);
+        }
+        this.setState({mode: mode,
+                       steps: this.snapSegments.length,
+                       length: pathLength});
+        this._hideSegments();
+        if (this.props.startplaying) {
+            this.play();
+        }
+    }
+
+    componentDidMount() {
+        Snap.load(this.props.svg, this.loadFile);
+    }
+
+    componentWillUnmount() {
+        this.svg.remove();  // destory SnapSVG for this DOM element
+    }
+
+    render() {
+        let loading = this.state.mode === 'loading', controls = '';
+        if (this.props.controls) {
+            let props = {
+                length: this.state.length,
+                mode: this.state.mode,
+                position: this.state.position,
+                scale: this.props.scale,
+                step: this.state.step,
+                units: this.props.units
+            };
+            if (this.props.path){
+                props.pause = this.pause;
+                props.play = this.play;
+            }
+            if (this.props.segments){
+                props.backward = this.playSegmentBackward;
+                props.forward = this.playSegmentForward;
+            }
+            controls = (<Controls {...props}/>);
+        }
+        return (
+            <div className="svg-path-player">
+                <Spinner loading={this.props.loading && loading}/>
+                <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}></div>
+                {controls}
+            </div>
+        );
+    }
+
+    pause(){
+        this.setState({mode: 'path'});
+        this.snapAnimate && this.snapAnimate.stop();  // resume() doesn't work... :(
+    }
+
+    _positionMarker(path, location, end){
         if (this.marker) {
             let point = Snap.path.getPointAtLength(path, location);
             let now = point;
@@ -130,93 +237,15 @@ export default class SVGPathPlayer extends React.Component {
         }
     }
 
-    playSegmentForward(){
-        let nextStep;
-        if ((this.state.step === -1) ||  // never stepped
-            (this.state.step + 1 > this.state.steps - 1)) { // stepped off end
-            nextStep = 0;
-        } else {
-            nextStep = this.state.step + 1;
+    _selectPath(pathClass, display){
+        let path = this.svg.select(pathClass);
+        if (path) {
+            path.attr({display: ''});
         }
-        this._transitionSegment(nextStep);
-    }
-
-    playSegmentBackward(){
-        let nextStep;
-        if (this.state.step <= 0){  // never stepped start at -1
-            nextStep = this.state.steps - 1;
-        } else {
-            nextStep = this.state.step - 1;
-        }
-        this._transitionSegment(nextStep);
-    }
-
-    componentDidMount() {
-        Snap.load(this.props.svg,
-                  (file) => {
-                      let pathLength = 0;
-                      let mode = 'path';
-                      this.svg = Snap(this.svgImage);
-                      this.svg.append(file);
-                      if (this.props.path){
-                          this.selectPath(this.props.path, true);
-                          pathLength = this.path.getTotalLength();
-                      }
-                      if (this.props.segments){
-                          this.snapSegments = this.svg.selectAll(this.props.segments + ' path');
-                          this.segmentLengths = this._segmentLengths();
-                          if (!pathLength){
-                              pathLength = this._segmentPosition(this.snapSegments.length-1);
-                          }
-                      }
-                      if (this.props.marker) {
-                          this.marker = this.svg.select(this.props.marker);
-                          this.marker.attr({marker:'', markerStart:'', markerEnd:''});
-                          if (this.props.path){
-                              this.path.attr({marker:'', markerStart:'', markerEnd:''});
-                          }
-                          if (this.props.segments){
-                              this.snapSegments.attr({marker:'', markerStart:'', markerEnd:''});
-                          }
-                          this.positionMarker(this.path, 0);
-                      }
-                      this.setState({mode: mode,
-                                     steps: this.snapSegments.length,
-                                     length: pathLength});
-                      this._hideSegments();
-                      if (this.props.startplaying) {
-                          this.play();
-                      }
-                  });
-    }
-
-    componentWillUnmount() {
-        this.svg.remove();  // destory SnapSVG for this DOM element
-    }
-
-    render() {
-        let loading = this.state.mode === 'loading';
-        let  controls = !this.props.controls ? '' : (<Controls backward={this.playSegmentBackward} forward={this.playSegmentForward} length={this.state.length} mode={this.state.mode} pause={this.pause} play={this.play} position={this.state.position} step={this.state.step} units={this.props.units}/>);
-        return (
-            <div className="svg-path-player">
-                <Spinner loading={this.props.loading && loading}/>
-                <div className="svg-container svg-container-box" ref={(ref) => this.svgImage = ref}></div>
-                {controls}
-            </div>
-        );
-    }
-
-    selectPath(pathClass, display){
-        this.svg.select(pathClass).attr({display: ''});
         this.path = this.svg.select(pathClass + ' path');
         if (!display) {
             this._hidePath();
         }
-    }
-
-    pause(){
-        this.setState({mode: 'path'});
-        this.snapAnimate.stop();  // resume() doesn't work... :(
     }
 
     _hidePath(){
@@ -233,7 +262,7 @@ export default class SVGPathPlayer extends React.Component {
         this._showSegment(nextStep);
 
         pathLen = this._segmentPosition(nextStep);
-        this.positionMarker(this.snapSegment, pathLen, pathLen);
+        this._positionMarker(this.currentSegment, pathLen, pathLen);
         this.setState({step: nextStep,
                        position: this._segmentPosition(nextStep),
                        mode: 'segment'});
@@ -266,14 +295,14 @@ export default class SVGPathPlayer extends React.Component {
     }
 
     _hideCurrentSegment(){
-        if (this.snapSegment){
-            this.snapSegment.attr({display: 'none'});
+        if (this.currentSegment){
+            this.currentSegment.attr({display: 'none'});
         }
     }
 
     _showSegment(step){
-        this.snapSegment = this.snapSegments[step];
-        this.snapSegment.attr({display: 'block'});
+        this.currentSegment = this.snapSegments[step];
+        this.currentSegment.attr({display: 'block'});
     }
 
     _segmentLengths(){

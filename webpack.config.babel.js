@@ -66,7 +66,7 @@ const demoCommon = {
         include: config.paths.demo
       },
       {
-        test: /(\.jpg)|(\.svg)$/,
+        test: /(\.jpg)$/,
         loader: 'file',
         include: config.paths.demo
       },
@@ -113,8 +113,8 @@ if (TARGET === 'start') {
           ]
         },
         {
-          test: /image\.svg$/,
-          loader: 'file?name=images/image.svg',
+          test: /images\/(\w*)\.svg$/,
+          loader: 'file?name=images/[name].svg',
           include: config.paths.demo
         }
       ]
@@ -132,8 +132,11 @@ if (TARGET === 'start') {
 }
 
 if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
-  module.exports = merge.smart(demoCommon, {
+    module.exports = merge.smart(demoCommon, {
     module: {
+      noParse: [
+          /node_modules\/sinon\//
+      ],
       preLoaders: [
         {
           test: /\.jsx?$/,
@@ -150,6 +153,11 @@ if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
           ]
         }
       ]
+    },
+    resolve: {
+      alias: {
+        'sinon': 'sinon/pkg/sinon'
+      }
     }
   })
 }
@@ -292,8 +300,8 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
         },
         // copy into gh-pages/images
         {
-          test: /image\.svg$/,
-          loader: 'file?name=images/image.svg',
+          test: /images\/(\w*)\.svg$/,
+          loader: 'file?name=images/[name].svg',
           include: config.paths.demo
         },
         {

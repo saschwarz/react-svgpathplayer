@@ -19,7 +19,7 @@ function setupControls(props) {
 }
 
 
-describe('components', () => {
+describe('Components', () => {
     describe('Controls', () => {
         it('displays disabled/inactive when mode is "loading"', () => {
             let {output} = setupControls({mode: 'loading',
@@ -148,6 +148,61 @@ describe('components', () => {
             let [buttons, status] = output.props.children;
             let [steps, distance] = status.props.children;
             expect(steps.props.children).to.eql([1, ' - ', 2]);
+        });
+        it('negative step number is displayed as 0', () => {
+            let {output} = setupControls({mode: 'segment',
+                                          step: -1,
+                                          forward: chai.spy(),
+                                          backward: chai.spy()});
+
+            let [buttons, status] = output.props.children;
+            let [steps, distance] = status.props.children;
+            expect(steps.props.children).to.eql([0, ' - ', 1]);
+        });
+        it('position and length are displayed', () => {
+            let props = {mode: 'segment',
+                         position: 1,
+                         length: 100,
+                         forward: chai.spy(),
+                         backward: chai.spy()};
+            let {output} = setupControls(props);
+
+            let [buttons, status] = output.props.children;
+            let [steps, distance] = status.props.children;
+            expect(distance.props.children).to.eql([props.position.toFixed(1), ' : ', props.length.toFixed(1), ' ', '']);
+        });
+        it('position, length, and units are displayed when scaled', () => {
+            let props = {mode: 'segment',
+                         position: 36.0,
+                         length: 360.0,
+                         scale: 1 / 36.0,
+                         units: 'yds',
+                         forward: chai.spy(),
+                         backward: chai.spy()};
+            let {output} = setupControls(props);
+
+            let [buttons, status] = output.props.children;
+            let [steps, distance] = status.props.children;
+            expect(distance.props.children).to.eql([(props.position * props.scale).toFixed(1),
+                                                    ' : ', (props.length * props.scale).toFixed(1),
+                                                    ' ', props.units]);
+        });
+        it('position, length, and units with zero decimal places', () => {
+            let props = {mode: 'segment',
+                         position: 36.0,
+                         length: 360.0,
+                         scale: 1 / 36.0,
+                         units: 'yds',
+                         decimalPlaces: 0,
+                         forward: chai.spy(),
+                         backward: chai.spy()};
+            let {output} = setupControls(props);
+
+            let [buttons, status] = output.props.children;
+            let [steps, distance] = status.props.children;
+            expect(distance.props.children).to.eql([(props.position * props.scale).toFixed(0),
+                                                    ' : ', (props.length * props.scale).toFixed(0),
+                                                    ' ', props.units]);
         });
     });
     describe('Controls', () => {

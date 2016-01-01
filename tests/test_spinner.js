@@ -8,7 +8,7 @@ chai.use(spies);
 var expect = chai.expect;
 
 
-describe('components', () => {
+describe('Components', () => {
     describe('Spinner', () =>{
        it('displays when loading prop is true', () => {
            let renderer = TestUtils.createRenderer()

@@ -51,23 +51,23 @@
         config.innerHTML = JSON.stringify(props, null, '    ');
         document.getElementById(destid).appendChild(config);
     }
-    var props1 = {svg:"./images/image.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236};
+    var props1 = {svg:"./images/pathsegments.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236};
     ReactDOM.render(React.createElement(SVGPathPlayer, props1), document.getElementById('player-1'));
     insertConfig(props1, 'player-1');
 
-    var props2 = {svg:"./images/image.svg", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236};
+    var props2 = {svg:"./images/segments.svg", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236};
     ReactDOM.render(React.createElement(SVGPathPlayer, props2), document.getElementById('player-2'));
     insertConfig(props2, 'player-2');
 
-    var props3 = {svg:"./images/image.svg", path:".dog-path-0", marker:".dog", loading:true, time:10236};
+    var props3 = {svg:"./images/pathsegments.svg", path:".dog-path-0", marker:".dog", loading:true, time:10236};
     ReactDOM.render(React.createElement(SVGPathPlayer, props3), document.getElementById('player-3'));
     insertConfig(props3, 'player-3');
 
-    var props4 = {svg:"./images/image.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236, controls:false, startplaying:true, repeat:true};
+    var props4 = {svg:"./images/pathsegments.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", loading:true, time:10236, controls:false, startplaying:true, repeat:true};
     ReactDOM.render(React.createElement(SVGPathPlayer, props4), document.getElementById('player-4'));
     insertConfig(props4, 'player-4');
 
-    var props5 = {svg:"./images/image.svg", path:".dog-path-0", marker:".dog", loading:true, time:10236, startplaying:true, controls:false};
+    var props5 = {svg:"./images/pathsegments.svg", path:".dog-path-0", marker:".dog", loading:true, time:10236, startplaying:true, controls:false};
     ReactDOM.render(React.createElement(SVGPathPlayer, props5), document.getElementById('player-5'));
     insertConfig(props5, 'player-5');
   </script>
