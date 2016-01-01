@@ -17,8 +17,5 @@ before_script:
 script:
   - npm run test
 after_success:
-  - codecov
+  - npm run report-coverage
   - npm run semantic-release
-branches:
-  except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"

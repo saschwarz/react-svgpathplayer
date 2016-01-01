@@ -55,7 +55,11 @@ module.exports = function karmaConfig (config) {
         // Configure code coverage reporter
         coverageReporter: {
             dir: 'build/coverage/',
-            type: 'html'
+            reporters: [
+                {type:'html', subdir: 'html'},
+                {type:'lcovonly', subdir: '.'},
+                {type: 'text-summary'}
+            ]
         },
 
         // Test webpack config
