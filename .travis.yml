@@ -3,6 +3,9 @@ language: node_js
 cache:
   directories:
     - node_modules
+branches:
+  only:
+    - master
 notifications:
   email: false
 node_js:
@@ -14,6 +17,7 @@ before_script:
 script:
   - npm run test
 after_success:
+  - codecov
   - npm run semantic-release
 branches:
   except:

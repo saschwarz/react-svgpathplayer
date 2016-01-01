@@ -159,7 +159,7 @@ if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
         'sinon': 'sinon/pkg/sinon'
       }
     }
-  })
+  });
 }
 
 const distCommon = {
