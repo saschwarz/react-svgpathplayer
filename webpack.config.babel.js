@@ -140,7 +140,7 @@ if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
       preLoaders: [
         {
           test: /\.jsx?$/,
-          loaders: ['isparta-instrumenter'],
+          loaders: ['isparta'],
           include: config.paths.src
         }
       ],
