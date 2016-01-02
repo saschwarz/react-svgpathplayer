@@ -206,10 +206,6 @@ const distCommon = {
 if (TARGET === 'dist') {
   module.exports = merge(distCommon, {
     output: {
-      // export itself to a global var
-      libraryTarget: 'var',
-      // name of the global var:
-      library: config.library,
       filename: config.filename + '.js'
     }
   });
@@ -218,10 +214,6 @@ if (TARGET === 'dist') {
 if (TARGET === 'dist-min') {
   module.exports = merge(distCommon, {
     output: {
-      // export itself to a global var
-      libraryTarget: 'var',
-      // name of the global var:
-      library: config.library,
       filename: config.filename + '.min.js'
     },
     plugins: [
@@ -234,7 +226,7 @@ if (TARGET === 'dist-min') {
   });
 }
 
-if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
+if (TARGET === 'gh-pages') {
   module.exports = merge(demoCommon, {
     entry: {
       app: path.join(config.paths.demo, 'index.js'),
@@ -305,8 +297,13 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
           include: config.paths.demo
         },
         {
-          test: /svgpathplayer\.min\.js$/,
-          loader: 'file?name=svgpathplayer.min.js',
+          test: /(\w*\.*)\.js$/,
+          loader: 'file?name=[name].js',
+          include: config.paths.dist
+        },
+        {
+          test: /(\w*\.*)\.map$/,
+          loader: 'file?name=[name].map',
           include: config.paths.dist
         }
       ]

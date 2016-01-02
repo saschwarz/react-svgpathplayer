@@ -1,7 +1,8 @@
+build/
 demo/
-dist/
-tests/
+gh-pages/
 src/
+tests/
 .*
 karma.conf.js
 webpack.config.babel.js

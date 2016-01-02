@@ -1,1 +1,1 @@
-module.exports = require('./svgpathplayer.jsx');
+module.exports = require('./svgpathplayer');
