@@ -3,7 +3,6 @@ language: node_js
 env:
   global:
     - GH_REF: github.com/saschwarz/react-svgpathplayer.git
-    - secure K4TuOLOIXxl+psWhNlCzhSUTmlorbgEK9xYT7qFzPHSm3aRBPOQ2nqGIjgWP7U52qaBPtJsC3JGbgTsiKyAVDp0CBJFHSeVV6x5Z6Mh/W41rzcYHnXa3o5VB0qfPiiDosHJOkETRR91G8RvtqZ/XSOhZ3n0UjxdvJQ5dfzXroO9Q67Gm/OtsoRmApoL4KM0EDC0SGW/M+Ct/I7Q7roVZsJ2iNp043AyI0P3gSe+Vu6YspQerFoB8Vrj5lULd671zNUWX08RJwPJTQ2+jAbHPqUXpBzOvAk1Dv5yfr30wa1l9Eb/tt7U+D95o6FwNIXdVtf0T4NG446vNLKpPr4STQpDwufUsyB0Vb4sNLJNpx4n10taYSX7Po2/HVY77uY1hjKPy81uElVfMopQpmPUH+SnhFtAnT0X+xRnByXlLXfrN3yv9uIXo2XDewBVhjj9tN2BWexL/iePoV5qj5rvldKNJU0lHTBi9ZP8ZHhtQitkevbYjwCaElv763vX4eea5ukcdpqOPu8NzsihNsNBrcrh6yzAQI5havaJTjH65y7L0Tgj55Fdo2cpHaYJXxBwNvUuo++Lt5vx22pBACjycWL1TB/XfKp+CMdpiXyL3GsJ7YXcGOuaMc98oT2GqoMqB2KuPFRwlGQ+jWwqh0vJTP882+xy5JsHDp8pb/Xv3ys0=
 cache:
   directories:
     - node_modules
