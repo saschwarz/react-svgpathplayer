@@ -226,7 +226,7 @@ if (TARGET === 'dist-min') {
   });
 }
 
-if (TARGET === 'gh-pages') {
+if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
   module.exports = merge(demoCommon, {
     entry: {
       app: path.join(config.paths.demo, 'index.js'),

@@ -7,12 +7,14 @@ See the [demo](http://saschwarz.github.io/react-svgpathplayer/) for example usag
 
 There is also a [demo](http://saschwarz.github.io/react-svgpathplayer/script.html) using this component in a plain HTML/JS file.
 
+The UMD build is available via CDN at https://npmcdn.com/react-svgpathplayer.
+
 ## Developers
 
 * Linting - **npm run lint** - Runs ESLint.
 * Developing - **npm start** - Runs the development server at *localhost:8080* and use Hot Module Replacement. You can override the default host and port through env (`HOST`, `PORT`).
-* Creating a version - **npm version <x.y.<>** - Updates */dist* and *package.json* with the new version and create a version tag to Git.
-* Publishing a version - **npm publish** - Pushes a new version to npm and updates the project site.
+* Testing - **npm test** - Runs a single pass through the tests and writes coverage to `build` directory.
+* TDD - **npm run tdd** - watches for file changes and re-runs tests/coverage
 
 ## License
 
