@@ -18,7 +18,6 @@
     "commit": "git-cz",
     "preversion": "npm run test && npm run lint",
     "prepublish": "npm run dist-modules",
-    "postpublish": "npm run gh-pages && npm run deploy-gh-pages",
     "postinstall": "node lib/post_install.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
