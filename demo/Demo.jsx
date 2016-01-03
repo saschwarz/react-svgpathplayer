@@ -57,7 +57,7 @@ export default class Demo extends React.Component {
                         }
                        ];
         return (
-                <div>
+                <div className="pure-g">
                 {examples.map((e, i) =>
                     <div className="pure-u-8-24 demo-container" key={i}>
                       <h4>{e.title}</h4>

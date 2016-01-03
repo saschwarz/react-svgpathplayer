@@ -50,11 +50,12 @@ header .description {
 
 article {
     display: block !important;
-
     margin-top: 6em;
     margin-left: auto;
     margin-right: auto;
     max-width: 980px;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 article section {
@@ -91,4 +92,8 @@ article .description {
 
 article .description h2 {
     margin: 0;
+}
+
+.pure-g {
+    letter-spacing: normal;
 }
