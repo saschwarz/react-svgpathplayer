@@ -87,3 +87,12 @@ article .description {
 article .description h2 {
     margin: 0;
 }
+
+@media (max-width: 420px) {
+    header {
+        position: relative;
+    }
+    header h1 {
+        font-size: 20px;
+    }
+}
