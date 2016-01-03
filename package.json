@@ -25,7 +25,8 @@
     "classnames": "^2.2.1",
     "lodash": "^3.10.1",
     "react": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "react-dom": "^0.14.0",
+    "snapsvg": "git+https://github.com/adobe-webplatform/Snap.svg.git#master"
   },
   "devDependencies": {
     "babel": "^5.8.23",
@@ -50,7 +51,6 @@
     "highlight.js": "^8.8.0",
     "html-webpack-plugin": "^1.6.2",
     "imports-loader": "^0.6.5",
-    "isparta-instrumenter-loader": "^0.2.1",
     "isparta-loader": "^1.0.0",
     "json-loader": "^0.5.3",
     "karma": "^0.13.16",
@@ -66,7 +66,6 @@
     "node-sass": "^3.4.2",
     "phantomjs": "^1.9.18",
     "phantomjs-polyfill": "0.0.1",
-    "purecss": "^0.6.0",
     "react-addons-test-utils": "^0.14.3",
     "react-ghfork": "^0.3.2",
     "react-transform-hmr": "^1.0.1",
@@ -74,7 +73,6 @@
     "semantic-release": "^4.3.5",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
-    "snapsvg": "git+https://github.com/adobe-webplatform/Snap.svg.git#master",
     "style-loader": "^0.13.0",
     "sync-exec": "^0.6.2",
     "system-bell-webpack-plugin": "^1.0.0",

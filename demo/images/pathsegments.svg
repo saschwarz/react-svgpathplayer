@@ -13,7 +13,7 @@
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title>Box AHNLGBFM</dc:title></cc:Work></rdf:RDF></metadata><style type="text/css">
     text {font-family:Calibri,Carlito,sans-serif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:24px;text-anchor:middle;text-align:center;writing-mode:lr;line-height:125%;vertical-align:center;}
     .dog-path, .dog-path-segment {fill:none;stroke-width:2;stroke:lightcoral;}
-    .dog-path-segment {display:none; marker-end: url(#dog-marker)}
+    .dog-path-segment {display:none}
     use.number {stroke:#A00;fill:#A00;stroke-width:1.5;}
     .color {fill:#000;fill-opacity:1;stroke:#000;stroke-opacity:1;}
     .light {fill:#fff;fill-opacity:1;stroke:#000;stroke-opacity:1;}

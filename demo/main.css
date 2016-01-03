@@ -1,10 +1,7 @@
-/* TODO: insert main styles of your demo here */
 
 body {
     background: #fefefe;
-
     font-family: Sans-Serif;
-
     line-height: 1.5;
 }
 
@@ -20,6 +17,7 @@ header {
     position: fixed;
     text-align: center;
     top: 0;
+    width: 100%;
     z-index: 1;
 }
 
@@ -75,10 +73,6 @@ pre.props {
     font-size: 0.8em;
 }
 
-.demo-container {
-    padding: 10px;
-}
-
 article .description {
     margin: 1em;
     padding: 1em;
@@ -92,8 +86,4 @@ article .description {
 
 article .description h2 {
     margin: 0;
-}
-
-.pure-g {
-    letter-spacing: normal;
 }
