@@ -6,25 +6,33 @@
     
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     
-    <link href="styles.de2c5adb896a959b65e2.css" rel="stylesheet">
+    <link href="styles.3b791cb516a47b0156ad.css" rel="stylesheet">
     
   </head>
   <body>
-    <div class="pure-g">
-      <header class="pure-u-1">
-        <h1>react-svgpathplayer</h1>
-        <div class="description">React component for animating an SVG path and/or a series of SVG paths.</div>
-      </header>
-      <article class="pure-u-1">
+    <header>
+      <h1>react-svgpathplayer</h1>
+      <div class="description">React component for animating an SVG path and/or a series of SVG paths.</div>
+    </header>
+    <div class="container">
+      <article>
         <h2>Demonstration</h2>
-        <section class="demonstration"></section>
+        <section class="demonstration row"></section>
         <h2>Documentation</h2>
         <section class="documentation"><div key="documentation"><p><a href="http://travis-ci.org/saschwarz/react-svgpathplayer"><img src="https://secure.travis-ci.org/saschwarz/react-svgpathplayer.svg?style=flat-square" alt="build status"></a> <a href="https://www.bithound.io/github/saschwarz/react-svgpathplayer"><img src="https://www.bithound.io/github/saschwarz/react-svgpathplayer/badges/score.svg?style=flat-square" alt="bitHound Score"></a> <a href="https://david-dm.org/saschwarz/react-svgpathplayer"><img src="https://david-dm.org/saschwarz/react-svgpathplayer.svg?style=flat-square" alt="Dependency Status"></a> <a href="https://www.npmjs.com/package/react-svgpathplayer"><img src="https://img.shields.io/npm/v/react-svgpathplayer.svg?style=flat-square" alt="license"></a> <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square" alt="semantic-release"></a> <a href="https://github.com/saschwarz/react-svgpathplayer/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square" alt="GitHub license"></a></p>
 <h1 id="react-svgpathplayer">react-svgpathplayer</h1>
+<h2 id="description-features">Description/Features</h2>
+<p>This player component loads an <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> image as it&#39;s child element using <a href="http://snapsvg.io/">Snap.svg</a>. It has two modes of operation: play/pause animation of a <code>path</code> element and/or forward/backward display of <code>path</code> elements contained in a parent element (&quot;stepped&quot; path or &quot;stepping&quot;).</p>
+<p>An SVG <a href="http://www.w3.org/TR/SVG/painting.html#Markers">marker</a> can also be specified to follow the leading end of the the path during animation and to be positioned at the end of stepped paths.</p>
+<p>The player is configured by supplying CSS selector strings for the animated path, parent element of stepped segments, and marker. These strings are supplied to SnapSVG&#39;s <code>select</code> method and are applied only to the SVG element in the DOM. CSS class selectors are recommended if multiple players will be used on a single page; if <code>id</code>s are used in SVG images they must be globally unique to the page.</p>
+<p>The presence/absence of <code>path</code> and <code>segments</code> properties enables/disables their respective control buttons and display sections.</p>
+<p>The player&#39;s controls can be hidden and the path can be animated once or looped repeatedly. See the demo for configuration examples.</p>
 <h2 id="basic-usage">Basic Usage</h2>
-<p>See the <a href="http://saschwarz.github.io/react-svgpathplayer/">demo</a> for example usage of this component.</p>
+<p>See the <a href="http://saschwarz.github.io/react-svgpathplayer/">demo</a> for example usage of this component and coposition of the SVG images.</p>
 <p>There is also a <a href="http://saschwarz.github.io/react-svgpathplayer/script.html">demo</a> using this component in a plain HTML/JS file.</p>
-<p>The UMD build is available via CDN at <a href="https://npmcdn.com/react-svgpathplayer">https://npmcdn.com/react-svgpathplayer</a>.</p>
+<p>This component is NPM installable:</p>
+<pre><code>npm install react-svgpathplayer
+</code></pre><p>A UMD build for use directly in the browser is available via CDN at <a href="https://npmcdn.com/react-svgpathplayer">https://npmcdn.com/react-svgpathplayer</a>.</p>
 <h2 id="developers">Developers</h2>
 <ul>
 <li>Linting - <strong>npm run lint</strong> - Runs ESLint.</li>
@@ -38,13 +46,13 @@
       </article>
     </div>
     
-    <script src="manifest.832eb514eec6c44cf6bb.js"></script>
+    <script src="manifest.75537f281e951023fb92.js"></script>
     
-    <script src="vendors.bd4e829dfe89b0a3383c.js"></script>
+    <script src="vendors.f05aa85c2a374215024c.js"></script>
     
-    <script src="script.3f49ee39c7df09958dcb.js"></script>
+    <script src="script.6839aa92d5d192bba1a4.js"></script>
     
-    <script src="app.de2c5adb896a959b65e2.js"></script>
+    <script src="app.3b791cb516a47b0156ad.js"></script>
     
   </body>
 </html>
