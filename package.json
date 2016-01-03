@@ -14,7 +14,7 @@
     "dist-min": "webpack",
     "dist-modules": "npm run dist && npm run dist-min",
     "lint": "eslint . --ext .js --ext .jsx",
-    "report-coverage": "cat ./build/coverage/lcov.info | codecov",
+    "report-coverage": "cat ./build/coverage/coverage-final.json | codecov",
     "commit": "git-cz",
     "preversion": "npm run test && npm run lint",
     "postpublish": "npm run gh-pages && npm run deploy-gh-pages",
