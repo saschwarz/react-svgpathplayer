@@ -1,5 +1,7 @@
 build/
 demo/
+# dist/ contains npm/npmcdn distributions and ES5 compiled index.js for use by git installs
+# dist/
 gh-pages/
 src/
 tests/

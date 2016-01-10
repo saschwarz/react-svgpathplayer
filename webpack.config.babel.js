@@ -163,19 +163,13 @@ if (TARGET === 'test' || TARGET === 'tdd' || !TARGET) {
 
 const distCommon = {
   devtool: 'source-map',
-  output: {
-    path: config.paths.dist,
-    libraryTarget: 'umd',
-    library: config.library
-  },
   entry: config.paths.src,
+    output: {
+        path: config.paths.dist,
+        libraryTarget: 'umd',
+        library: config.library
+    },
   // want packaged version to contain only it's code
-  externals: {
-   'react': 'var React',
-   'react/addons': 'var React',
-   'snapsvg': 'var Snap',
-   'lodash': 'var _'
-  },
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.png', '.jpg', '.scss']
   },
@@ -202,8 +196,32 @@ const distCommon = {
   ]
 };
 
+if (TARGET === 'dist-npm') {
+    // ES5 output for use by github installed versions
+    module.exports = merge(distCommon, {
+        devtool: 'source',
+        output: {
+            filename: 'index.js'
+        },
+        externals: {
+            'react': 'react',
+            'snapsvg': 'snapsvg',
+            'lodash': 'lodash'
+        }
+    });
+}
+
+const scriptDist = merge(distCommon, {
+    // ES5 output for use in <script>s
+    externals: {
+        'react': 'var React',
+        'snapsvg': 'var Snap',
+        'lodash': 'var _'
+    }
+});
+
 if (TARGET === 'dist') {
-  module.exports = merge(distCommon, {
+  module.exports = merge(scriptDist, {
     output: {
       filename: config.filename + '.js'
     }
@@ -211,7 +229,7 @@ if (TARGET === 'dist') {
 }
 
 if (TARGET === 'dist-min') {
-  module.exports = merge(distCommon, {
+  module.exports = merge(scriptDist, {
     output: {
       filename: config.filename + '.min.js'
     },
@@ -310,7 +328,7 @@ if (TARGET === 'gh-pages' || TARGET === 'deploy-gh-pages') {
   });
 }
 
-function renderHTML(htmlTemplate, demoTemplate, templateParams) {
+function renderHTML(htmlTemplate, demoTemplate) {
   demoTemplate = demoTemplate || '';
 
   var tpl = fs.readFileSync(path.join(__dirname, htmlTemplate), 'utf8');

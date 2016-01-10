@@ -13,18 +13,70 @@ The presence/absence of `path` and `segments` properties enables/disables their 
 
 The player's controls can be hidden and the path can be animated once or looped repeatedly. See the demo for configuration examples.
 
-## Basic Usage
+## Usage
 
-See the [demo](http://saschwarz.github.io/react-svgpathplayer/) for example usage of this component and coposition of the SVG images.
+### As a Component Within a React Application
 
-There is also a [demo](http://saschwarz.github.io/react-svgpathplayer/script.html) using this component in a plain HTML/JS file.
+See the [demo](http://saschwarz.github.io/react-svgpathplayer/) for example usage of this component and the composition of the SVG images.
 
-This component is NPM installable:
+Install the component:
+
 ```
 npm install react-svgpathplayer
 ```
 
-A UMD build for use directly in the browser is available via CDN at https://npmcdn.com/react-svgpathplayer.
+Unfortunately, `Snap.svg` doesn't integrate well with the `npm` infrastructure; it is easiest to just includes it in the HTML or take a look at the `demoConfig` in the `webpack.config.babel.js` file.
+
+Include the component in the application, provide it's `props`, and render it:
+
+```javascript
+import SVGPathPlayer from 'react-svgpathplayer';
+require('./images/pathsegments.svg');
+
+
+export default class Demo extends React.Component {
+    render() {
+        let props = {svg:'./images/pathsegments.svg',
+                     path:'.dog-path-0',
+                     segments:'.dog-path-segments-0',
+                     marker:'.dog',
+                     units:'yd',
+                     scale:1/36.0,
+                     loading:true,
+                     time:10236};
+         return (<SVGPathPlayer {...props}/>);
+    }
+}
+
+```
+
+### As a JavaScript Component
+
+See the [demo](http://saschwarz.github.io/react-svgpathplayer/script.html) using this component in a plain HTML/JS file.
+
+A UMD build for use directly in the browser is available via CDN at https://npmcdn.com/react-svgpathplayer.js, https://npmcdn.com/react-svgpathplayer.min.js with corresponding map files.
+
+You'll need to include all the dependencies:
+
+```
+<body>
+<div id="player"/>
+...
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+  <!-- host it locally: -->
+  <script src="./svgpathplayer.min.js"></script>
+  <!-- or use the npmcdn: -->
+  <script src="https://npmcdn/react-svgpathplayer/dist/react-svgpathplayer.min.js"></script>
+  <script>
+    var props1 = {svg:"./images/pathsegments.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", units:"yd", scale:1/36.0, loading:true, time:10236};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props1), document.getElementById('player'));
+  </script>
+</body>
+...
+```
 
 ## Developers
 
