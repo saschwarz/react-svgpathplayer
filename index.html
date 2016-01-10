@@ -6,7 +6,7 @@
     
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     
-    <link href="styles.ab193d3cb9d6f3333cd5.css" rel="stylesheet">
+    <link href="styles.6e81d49756811f818b82.css" rel="stylesheet">
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -28,13 +28,53 @@
 <p>The player is configured by supplying CSS selector strings for the animated path, parent element of stepped segments, and marker. These strings are supplied to SnapSVG&#39;s <code>select</code> method and are applied only to the SVG element in the DOM. CSS class selectors are recommended if multiple players will be used on a single page; if <code>id</code>s are used in SVG images they must be globally unique to the page.</p>
 <p>The presence/absence of <code>path</code> and <code>segments</code> properties enables/disables their respective control buttons and display sections.</p>
 <p>The player&#39;s controls can be hidden and the path can be animated once or looped repeatedly. See the demo for configuration examples.</p>
-<h2 id="basic-usage">Basic Usage</h2>
-<p>See the <a href="http://saschwarz.github.io/react-svgpathplayer/">demo</a> for example usage of this component and coposition of the SVG images.</p>
-<p>There is also a <a href="http://saschwarz.github.io/react-svgpathplayer/script.html">demo</a> using this component in a plain HTML/JS file.</p>
-<p>This component is NPM installable:</p>
+<h2 id="usage">Usage</h2>
+<h3 id="as-a-component-within-a-react-application">As a Component Within a React Application</h3>
+<p>See the <a href="http://saschwarz.github.io/react-svgpathplayer/">demo</a> for example usage of this component and the composition of the SVG images.</p>
+<p>Install the component:</p>
 <pre><code>npm install react-svgpathplayer
-</code></pre><p>A UMD build for use directly in the browser is available via CDN at <a href="https://npmcdn.com/react-svgpathplayer">https://npmcdn.com/react-svgpathplayer</a>.</p>
-<h2 id="developers">Developers</h2>
+</code></pre><p>Unfortunately, <code>Snap.svg</code> doesn&#39;t integrate well with the <code>npm</code> infrastructure; it is easiest to just includes it in the HTML or take a look at the <code>demoConfig</code> in the <code>webpack.config.babel.js</code> file.</p>
+<p>Include the component in the application, provide it&#39;s <code>props</code>, and render it:</p>
+<pre><code class="lang-javascript">import SVGPathPlayer from &#39;react-svgpathplayer&#39;;
+require(&#39;./images/pathsegments.svg&#39;);
+
+
+export default class Demo extends React.Component {
+    render() {
+        let props = {svg:&#39;./images/pathsegments.svg&#39;,
+                     path:&#39;.dog-path-0&#39;,
+                     segments:&#39;.dog-path-segments-0&#39;,
+                     marker:&#39;.dog&#39;,
+                     units:&#39;yd&#39;,
+                     scale:1/36.0,
+                     loading:true,
+                     time:10236};
+         return (&lt;SVGPathPlayer {...props}/&gt;);
+    }
+}
+</code></pre>
+<h3 id="as-a-javascript-component">As a JavaScript Component</h3>
+<p>See the <a href="http://saschwarz.github.io/react-svgpathplayer/script.html">demo</a> using this component in a plain HTML/JS file.</p>
+<p>A UMD build for use directly in the browser is available via CDN at <a href="https://npmcdn.com/react-svgpathplayer.js">https://npmcdn.com/react-svgpathplayer.js</a>, <a href="https://npmcdn.com/react-svgpathplayer.min.js">https://npmcdn.com/react-svgpathplayer.min.js</a> with corresponding map files.</p>
+<p>You&#39;ll need to include all the dependencies:</p>
+<pre><code>&lt;body&gt;
+&lt;div id=&quot;player&quot;/&gt;
+...
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js&quot;&gt;&lt;/script&gt;
+  &lt;!-- host it locally: --&gt;
+  &lt;script src=&quot;./svgpathplayer.min.js&quot;&gt;&lt;/script&gt;
+  &lt;!-- or use the npmcdn: --&gt;
+  &lt;script src=&quot;https://npmcdn/react-svgpathplayer/dist/react-svgpathplayer.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+    var props1 = {svg:&quot;./images/pathsegments.svg&quot;, path:&quot;.dog-path-0&quot;, segments:&quot;.dog-path-segments-0&quot;, marker:&quot;.dog&quot;, units:&quot;yd&quot;, scale:1/36.0, loading:true, time:10236};
+    ReactDOM.render(React.createElement(SVGPathPlayer, props1), document.getElementById(&#39;player&#39;));
+  &lt;/script&gt;
+&lt;/body&gt;
+...
+</code></pre><h2 id="developers">Developers</h2>
 <ul>
 <li>Linting - <strong>npm run lint</strong> - Runs ESLint.</li>
 <li>Developing - <strong>npm start</strong> - Runs the development server at <em>localhost:8080</em> and use Hot Module Replacement. You can override the default host and port through env (<code>HOST</code>, <code>PORT</code>).</li>
@@ -47,13 +87,13 @@
       </article>
     </div>
     
-    <script src="manifest.8b334fb8ed8b4de96c28.js"></script>
+    <script src="manifest.adf4d26425c60f3f864a.js"></script>
     
-    <script src="vendors.f05aa85c2a374215024c.js"></script>
+    <script src="vendors.dddffb2e86d412072a53.js"></script>
     
-    <script src="script.6839aa92d5d192bba1a4.js"></script>
+    <script src="script.1bb599613eb213f5946e.js"></script>
     
-    <script src="app.ab193d3cb9d6f3333cd5.js"></script>
+    <script src="app.6e81d49756811f818b82.js"></script>
     
   </body>
 </html>
