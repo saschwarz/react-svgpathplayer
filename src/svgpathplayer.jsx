@@ -153,7 +153,7 @@ export default class SVGPathPlayer extends React.Component {
         }
         if (this.props.segments){
             this.snapSegments = this.svg.selectAll(this.props.segments + ' path');
-            this.segmentLengths = this._segmentLengths();
+            this.segmentLengths = this._calculateSegmentLengths();
             if (this.segmentLengths.length > 0 && !pathLength){
                 pathLength = this._segmentPosition(this.snapSegments.length-1);
             }
@@ -274,7 +274,7 @@ export default class SVGPathPlayer extends React.Component {
                                 (length) => {
                                     return pos >= length;
                                 });
-        x = x < 0 ? 0 : x;
+        x = x < 0 ? 0 : x + 1;
         return x;
     }
 
@@ -306,7 +306,7 @@ export default class SVGPathPlayer extends React.Component {
         this.currentSegment.attr({display: 'block'});
     }
 
-    _segmentLengths(){
+    _calculateSegmentLengths(){
         // total length of path at end of each segment
         return _.reduce(this.snapSegments,
                         (a, v) => {

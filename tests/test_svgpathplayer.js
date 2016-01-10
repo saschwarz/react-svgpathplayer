@@ -12,6 +12,7 @@ chai.use(spies);
 chai.use(sinonChai);
 var expect = chai.expect;
 
+
 function setupPlayer(props) {
   props = props || {
       svg: 'image.svg',
@@ -97,6 +98,28 @@ describe('Components', () => {
             component.snapAnimate = {stop: () => {}};
             component.pause();
             expect(component.state.mode).to.equal('path');
+        });
+        it('segment length are cumulative', () => {
+            component.loadFile(document.createDocumentFragment('<svg></svg>'));
+            component.snapSegments = [{getTotalLength: () => {return 10}},
+                                      {getTotalLength: () => {return 10}}
+                                     ];
+            expect(component._calculateSegmentLengths()).to.eql([10, 20]);
+        });
+        it('segment position is 0 based before playing', () => {
+            component.loadFile(document.createDocumentFragment('<svg></svg>'));
+            component.segmentLengths = [10.0, 20.0, 30.0];
+            expect(component._segmentFromPosition(0)).to.equal(0);
+        });
+        it('segment position is 1 when past first length', () => {
+            component.loadFile(document.createDocumentFragment('<svg></svg>'));
+            component.segmentLengths = [10.0, 20.0, 30.0];
+            expect(component._segmentFromPosition(10.001)).to.equal(1);
+        });
+        it('segment position is number of segments when past final length', () => {
+            component.loadFile(document.createDocumentFragment('<svg></svg>'));
+            component.segmentLengths = [10.0, 20.0, 30.0];
+            expect(component._segmentFromPosition(30.001)).to.equal(component.segmentLengths.length);
         });
         it('loading with a path that does not exist succeeds', () => {
             component.loadFile(document.createDocumentFragment('<svg></svg>'));
