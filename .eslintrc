@@ -15,6 +15,7 @@
     "jsx": true,
     "globalReturn": false
   },
+  "extends": "eslint:recommended",
   "rules": {
     "no-underscore-dangle": 0,
     "no-use-before-define": 0,

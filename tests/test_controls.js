@@ -145,8 +145,8 @@ describe('Components', () => {
                                           forward: chai.spy(),
                                           backward: chai.spy()});
 
-            let [buttons, status] = output.props.children;
-            let [steps, distance] = status.props.children;
+            let status = output.props.children[1];
+            let steps = status.props.children[0];
             expect(steps.props.children).to.eql([1, ' - ', 2]);
         });
         it('negative step number is displayed as 0', () => {
@@ -155,8 +155,8 @@ describe('Components', () => {
                                           forward: chai.spy(),
                                           backward: chai.spy()});
 
-            let [buttons, status] = output.props.children;
-            let [steps, distance] = status.props.children;
+            let status = output.props.children[1];
+            let steps = status.props.children[0];
             expect(steps.props.children).to.eql([0, ' - ', 1]);
         });
         it('position and length are displayed', () => {
@@ -167,8 +167,8 @@ describe('Components', () => {
                          backward: chai.spy()};
             let {output} = setupControls(props);
 
-            let [buttons, status] = output.props.children;
-            let [steps, distance] = status.props.children;
+            let status = output.props.children[1];
+            let distance = status.props.children[1];
             expect(distance.props.children).to.eql([props.position.toFixed(1), ' : ', props.length.toFixed(1), ' ', '']);
         });
         it('position, length, and units are displayed when scaled', () => {
@@ -181,8 +181,8 @@ describe('Components', () => {
                          backward: chai.spy()};
             let {output} = setupControls(props);
 
-            let [buttons, status] = output.props.children;
-            let [steps, distance] = status.props.children;
+            let status = output.props.children[1];
+            let distance = status.props.children[1];
             expect(distance.props.children).to.eql([(props.position * props.scale).toFixed(1),
                                                     ' : ', (props.length * props.scale).toFixed(1),
                                                     ' ', props.units]);
@@ -198,8 +198,8 @@ describe('Components', () => {
                          backward: chai.spy()};
             let {output} = setupControls(props);
 
-            let [buttons, status] = output.props.children;
-            let [steps, distance] = status.props.children;
+            let status = output.props.children[1];
+            let distance = status.props.children[1];
             expect(distance.props.children).to.eql([(props.position * props.scale).toFixed(0),
                                                     ' : ', (props.length * props.scale).toFixed(0),
                                                     ' ', props.units]);

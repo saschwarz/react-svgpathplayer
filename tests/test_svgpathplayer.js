@@ -80,18 +80,14 @@ describe('Components', () => {
             expect(transition).to.have.been.calledWith(0);
         });
         it('play after loading sets mode to play', () => {
-            let animate = sandbox.stub(Snap, 'animate');
             component.path = {attr: () => {}};
-            let attr = sandbox.stub(component.path, 'attr');
             component.setState({position: 0,
                                 length: 100});
             component.play();
             expect(component.state.mode).to.equal('playing');
         });
         it('play at end sets mode to play', () => {
-            let animate = sandbox.stub(Snap, 'animate');
             component.path = {attr: () => {}};
-            let attr = sandbox.stub(component.path, 'attr');
             component.setState({position: 100,
                                 length: 100});
             component.play();
@@ -99,7 +95,6 @@ describe('Components', () => {
         });
         it('pause sets mode to path', () => {
             component.snapAnimate = {stop: () => {}};
-            let animate = sandbox.stub(component.snapAnimate, 'stop');
             component.pause();
             expect(component.state.mode).to.equal('path');
         });
@@ -133,12 +128,12 @@ describe('Components', () => {
         });
         it('while loading image and spinner is configured spinner is visible', () => {
             const { output } = setupPlayer();
-            let [ loading, container, controls ] = output.props.children;
+            let loading = output.props.children[0];
             expect(loading.props).to.eql({loading: true});
         });
         it('while loading image and spinner is not configured spinner is not visible', () => {
             const { output } = setupPlayer({loading: false});
-            let [ loading, container, controls ] = output.props.children;
+            let loading = output.props.children[0];
             expect(loading.props).to.eql({loading: false});
         });
     });

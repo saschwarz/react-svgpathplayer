@@ -1,3 +1,4 @@
+/*global mina*/
 import React from 'react';
 import _ from 'lodash';
 import Snap from 'snapsvg';
