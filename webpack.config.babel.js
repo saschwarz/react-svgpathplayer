@@ -19,7 +19,7 @@ const config = {
     demo: path.join(ROOT_PATH, 'demo'),
     test: path.join(ROOT_PATH, 'tests')
   },
-  filename: 'svgpathplayer',
+  filename: 'react-svgpathplayer',
   library: 'SVGPathPlayer'
 };
 const CSS_PATHS = [

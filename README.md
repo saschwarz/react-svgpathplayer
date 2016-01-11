@@ -54,7 +54,7 @@ export default class Demo extends React.Component {
 
 See the [demo](http://saschwarz.github.io/react-svgpathplayer/script.html) using this component in a plain HTML/JS file.
 
-A UMD build for use directly in the browser is available via CDN at https://npmcdn.com/react-svgpathplayer.js, https://npmcdn.com/react-svgpathplayer.min.js with corresponding map files.
+A UMD build for use directly in the browser is available via CDN at https://npmcdn.com/dist/react-svgpathplayer.min.js, https://npmcdn.com/dist/react-svgpathplayer.js with corresponding map files.
 
 You'll need to include all the dependencies:
 

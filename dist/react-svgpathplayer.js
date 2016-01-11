@@ -264,7 +264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            if (this.props.segments) {
 	                this.snapSegments = this.svg.selectAll(this.props.segments + ' path');
-	                this.segmentLengths = this._segmentLengths();
+	                this.segmentLengths = this._calculateSegmentLengths();
 	                if (this.segmentLengths.length > 0 && !pathLength) {
 	                    pathLength = this._segmentPosition(this.snapSegments.length - 1);
 	                }
@@ -398,7 +398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var x = _lodash2['default'].findLastIndex(this.segmentLengths, function (length) {
 	                return pos >= length;
 	            });
-	            x = x < 0 ? 0 : x;
+	            x = x < 0 ? 0 : x + 1;
 	            return x;
 	        }
 	    }, {
@@ -439,8 +439,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.currentSegment.attr({ display: 'block' });
 	        }
 	    }, {
-	        key: '_segmentLengths',
-	        value: function _segmentLengths() {
+	        key: '_calculateSegmentLengths',
+	        value: function _calculateSegmentLengths() {
 	            // total length of path at end of each segment
 	            return _lodash2['default'].reduce(this.snapSegments, function (a, v) {
 	                if (_lodash2['default'].last(a)) {
@@ -1083,4 +1083,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-//# sourceMappingURL=svgpathplayer.js.map
+//# sourceMappingURL=react-svgpathplayer.js.map
