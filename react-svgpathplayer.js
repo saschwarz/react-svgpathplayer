@@ -498,8 +498,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/home/travis/build/saschwarz/react-svgpathplayer/node_modules!./svgpathplayer.scss", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/home/travis/build/saschwarz/react-svgpathplayer/node_modules!./svgpathplayer.scss");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/Users/saschwarz/dev/react-svgpathplayer/node_modules!./svgpathplayer.scss", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&includePaths[]=/Users/saschwarz/dev/react-svgpathplayer/node_modules!./svgpathplayer.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
