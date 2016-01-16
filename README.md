@@ -67,9 +67,9 @@ You'll need to include all the dependencies:
   <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
   <!-- host it locally: -->
-  <script src="./svgpathplayer.min.js"></script>
+  <script src="./react-svgpathplayer.min.js"></script>
   <!-- or use the npmcdn: -->
-  <script src="https://npmcdn/react-svgpathplayer/dist/react-svgpathplayer.min.js"></script>
+  <script src="https://npmcdn/react-svgpathplayer@latest/dist/react-svgpathplayer.min.js"></script>
   <script>
     var props1 = {svg:"./images/pathsegments.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", units:"yd", scale:1/36.0, loading:true, time:10236};
     ReactDOM.render(React.createElement(SVGPathPlayer, props1), document.getElementById('player'));
