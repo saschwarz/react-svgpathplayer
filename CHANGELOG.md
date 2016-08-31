@@ -39,7 +39,7 @@
 
 ### Features
 
-* **dist:** All dists to dist/ and deploy all to github/npmcdn. Expanded README. ([41f8a93](https://github.com/saschwarz/react-svgpathplayer/commit/41f8a93))
+* **dist:** All dists to dist/ and deploy all to github/unpkg. Expanded README. ([41f8a93](https://github.com/saschwarz/react-svgpathplayer/commit/41f8a93))
 
 
 ### BREAKING CHANGES
@@ -147,7 +147,7 @@
 ### Bug Fixes
 
 * **npm:** Correct distributions ([071386b](https://github.com/saschwarz/react-svgpathplayer/commit/071386b))
-* **npmcdn:** Document npmcdn and fix github pages deploy. ([bc3595b](https://github.com/saschwarz/react-svgpathplayer/commit/bc3595b))
+* **unpkg:** Document unpkg and fix github pages deploy. ([bc3595b](https://github.com/saschwarz/react-svgpathplayer/commit/bc3595b))
 
 
 
