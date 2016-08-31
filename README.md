@@ -54,7 +54,7 @@ export default class Demo extends React.Component {
 
 See the [demo](http://saschwarz.github.io/react-svgpathplayer/script.html) using this component in a plain HTML/JS file.
 
-A UMD build for use directly in the browser is available via CDN at https://npmcdn.com/react-svgpathplayer@latest/dist/react-svgpathplayer.min.js, https://npmcdn.com/react-svgpathplayer@latest/dist/react-svgpathplayer.js with corresponding map files.
+A UMD build for use directly in the browser is available via CDN at https://unpkg.com/react-svgpathplayer@latest/dist/react-svgpathplayer.min.js, https://unpkg.com/react-svgpathplayer@latest/dist/react-svgpathplayer.js with corresponding map files.
 
 You'll need to include all the dependencies:
 
@@ -68,8 +68,8 @@ You'll need to include all the dependencies:
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
   <!-- host it locally: -->
   <script src="./react-svgpathplayer.min.js"></script>
-  <!-- or use the npmcdn: -->
-  <script src="https://npmcdn/react-svgpathplayer@latest/dist/react-svgpathplayer.min.js"></script>
+  <!-- or use the unpkg: -->
+  <script src="https://unpkg/react-svgpathplayer@latest/dist/react-svgpathplayer.min.js"></script>
   <script>
     var props1 = {svg:"./images/pathsegments.svg", path:".dog-path-0", segments:".dog-path-segments-0", marker:".dog", units:"yd", scale:1/36.0, loading:true, time:10236};
     ReactDOM.render(React.createElement(SVGPathPlayer, props1), document.getElementById('player'));
